@@ -1,26 +1,23 @@
-# flask-quickstart
-**[v1.1.2](https://github.com/bittobennichan/flask-quickstart/blob/master/CHANGES)**
+# Secure | Private Messaging
 
-**flask-quickstart** is a minimal boilerplate/template for starting your new Flask project.
+Quickstarted from **flask-quickstart** which is a minimal boilerplate/template for starting your new Flask project.
 
-The good thing about *flask-quickstart* is that it does not assume that you are using any Flask extensions. It sets up your project layout, main *Blueprint*, configuration and then gets out of your way!
-
-## Quickstart to flask-quickstart
+## Getting Started
 
 First clone the repostiory
 
 ```
-$ git clone https://github.com/bittobennichan/flask-quickstart.git
+$ git clone https://github.com/AtaGowani/secure_messaging_app.git
 ```
-Change directory to flask-quickstart
+Change directory to repo
 
 ```
-$ cd flask-quickstart
+$ cd secure_messaging_app/
 ```
 Create a virtual environment and install dependencies
 ```
-$ python -m venv venv
-$ source venv/bin/activate
+$ python3 -m venv .venv
+$ source .venv/bin/activate
 $ python -m pip install --upgrade pip setuptools
 $ python -m pip install -r requirements.txt
 ```
@@ -29,9 +26,8 @@ Start the development server
 ```
 $ python manage.py runserver
 ```
-That's it! 
 
-Navigate to `http://127.0.0.1:5000/` and start your new project!
+Navigate to `http://127.0.0.1:5000/`
 
 ## Project layout
 ```
@@ -44,9 +40,10 @@ flask-quickstart/
 │   │   └── views.py
 │   ├── models/
 │   ├── static/
-│   │   ├── css/
-│   │   ├── img/
-│   │   └── js/
+|   |   ├── assets/
+│   │   │   ├── css/
+│   │   │   ├── img/
+│   │   │   └── js/
 │   └── templates/
 │       ├── common/
 │       ├── error/
