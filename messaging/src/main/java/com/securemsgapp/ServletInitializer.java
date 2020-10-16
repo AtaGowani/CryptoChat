@@ -1,4 +1,4 @@
-package com.securemsgapp.securemsgapp;
+package com.securemsgapp;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
