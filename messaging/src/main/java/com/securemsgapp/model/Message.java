@@ -6,4 +6,8 @@ public class Message {
     public String getMessageBody()  {
         return this.body;
     }
+
+    public void setBody(String msgBody)  {
+        this.body = msgBody;
+    }
 }
