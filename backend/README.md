@@ -1,6 +1,9 @@
-# Secure | Private Messaging
+# Backend Component
 
-Quickstarted from **flask-quickstart** which is a minimal boilerplate/template for starting your new Flask project.
+## System Requirements
+
+* Running Linux, MacOS, or Windows
+* Must have Python 3.3 or greater
 
 ## Getting Started
 
@@ -9,10 +12,10 @@ First clone the repostiory
 ```
 $ git clone https://github.com/AtaGowani/secure_messaging_app.git
 ```
-Change directory to repo
+Change directory to backend
 
 ```
-$ cd secure_messaging_app/
+$ cd secure_messaging_app/backend
 ```
 Create a virtual environment and install dependencies
 ```
@@ -31,26 +34,14 @@ Navigate to `http://127.0.0.1:5000/`
 
 ## Project layout
 ```
-flask-quickstart/
+backend/
 ├── app/
 │   ├── __init__.py
 │   ├── main/
 │   │   ├── forms.py
 │   │   ├── __init__.py
-│   │   └── views.py
+│   │   └── app.py
 │   ├── models/
-│   ├── static/
-|   |   ├── assets/
-│   │   │   ├── css/
-│   │   │   ├── img/
-│   │   │   └── js/
-│   └── templates/
-│       ├── common/
-│       ├── error/
-│       │   ├── 404.html
-│       │   └── 500.html
-│       └── main/
-│           └── index.html
 ├── CHANGES
 ├── config.py
 ├── instance/
@@ -75,7 +66,7 @@ When you clone the repo, you'll notice that you will be missing the *config.py* 
 This is b'coz it should be set to be ignored in the *.gitignore* file. Infact everything except *example_config.py* is set to be ignored. This is where you will store the deployment/production configuration values. You don't want to accidently push this to Github. Rename the file to *config.py* after you clone the repo.
 
 
-If available, the values in `flask-quickstart/instance/config.py` will override any config values set in tthe environment form `flask-quickstart/config.py` when environment is set to `production` (it is set to `development` by default).
+If available, the values in `flask-quickstart/instance/config.py` will override any config values set in the environment from `flask-quickstart/config.py` when environment is set to `production` (it is set to `development` by default).
 
 The **wsgi.py** file uses `production` as the environment. This file is to be used by WSGI servers such as Gunicorn.
 
@@ -106,8 +97,3 @@ $ python manage.py runserver --env production --port 5566
 Runs the  server in `production` environment on port 5566.
 
 You can  extend `manage.py` to support additional commands, parameters etc.
-
-## Developing your application
-
-*flask-quickstart* is built in such a way that you can easily integrate extensions, Blueprints, tests etc. The files are commented to help you out with this.
-
