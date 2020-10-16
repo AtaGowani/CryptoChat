@@ -10,12 +10,12 @@ main = Blueprint(
 
 @main.route('/', methods=['GET'])
 def index():
-    return render_template('main/index.html.jinja')
+    return "Welcome to the Backend"
 
-@main.route('/signup', methods=['GET'])
+@main.route('/signup', methods=['POST'])
 def signup():
-    return render_template('main/signup.html.jinja')
+    return None
 
-@main.route('/signin', methods=['GET'])
+@main.route('/signin', methods=['POST'])
 def signin():
-    return render_template('main/signin.html.jinja')
+    return None
