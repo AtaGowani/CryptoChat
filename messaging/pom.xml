@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.securemsgapp</groupId>
-	<artifactId>secure-msg-app</artifactId>
+	<artifactId>messaging</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>secure-msg-app</name>
+	<name>messaging</name>
 	<description>Demo project CS4389</description>
 
 	<properties>
