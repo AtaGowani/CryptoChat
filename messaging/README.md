@@ -6,8 +6,8 @@ End-to-end working solution for this component requires two servers to be runnin
 ## Major Components
 * RabbitMQ
     * used as an asynchronous message broker to handle messages users send amongst each other.
-    * reason for using a message broker implemented with queues because our app will not store user messages in a database as a security feature, and this service 
-    * this service offers more reliability and support for asynchronous messaging so that users do not have to be online in order to be sent messages and there is more flexibility in message coordination
+    * reason for using a message broker implemented with queues because our app will not store user messages in a database as a security feature 
+    * this service offers more reliability and support for asynchronous messaging so that users do not have to be online in order to be sent messages and there is more flexibility in message coordination without sacrificing reliable message delivery
     
 * Java Spring Boot
     * supports the messaging REST API
@@ -15,22 +15,22 @@ End-to-end working solution for this component requires two servers to be runnin
 
 ## Project Structure 
 Source code components are in src/main/java inside the com.securemsgapp package. There are four subpackages within:
-    * controller
-        * MessageController - the REST API that the frontend components will communicate with in order to send messages
-    * config
-        * RabbitMQConfig - adds the needed configuration parameters to an already live RabbitMQ server
-    * model
-        * Message - represents and encompasses all the relevant information about a message that wants to be sent
-    * service
-        * RabbitMQListener - class for objects that listen for messages on a queue and consumes these messages as they are retrieved
-        * RabbitMQSender - class for objects that send messages to a queue
-    * SecureMsgAppApplication - driver that starts and runs the messaging API backend
-    * ServletInitializer - servlet that allows deploying the backend components as a WAR file
+* controller
+    * MessageController - the REST API that the frontend components will communicate with in order to send messages
+* config
+    * RabbitMQConfig - adds the needed configuration parameters to an already live RabbitMQ server
+* model
+    * Message - represents and encompasses all the relevant information about a message that wants to be sent
+* service
+    * RabbitMQListener - class for objects that listen for messages on a queue and consumes these messages as they are retrieved
+    * RabbitMQSender - class for objects that send messages to a queue
+* SecureMsgAppApplication - driver that starts and runs the messaging API backend
+* ServletInitializer - servlet that allows deploying the backend components as a WAR file
     
 ## Message API Definition
 The base endpoint is dynamic and will change depending on deployment. This definition just includes the relative paths.
 
-#### /send
+### /send
 * Request type: POST
 * Request body: the encrypted contents of the message that the user wishes to send
     
