@@ -1,4 +1,4 @@
-package com.securemsgapp.securemsgapp;
+package com.securemsgapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
