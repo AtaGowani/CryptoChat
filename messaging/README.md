@@ -4,13 +4,19 @@
 End-to-end working solution for this component requires two servers to be running - one for the messaging API endpoint, and the other for the RabbitMQ server that handling asynchronous messaging.
 
 ## Major Components
-* RabbitMQ
-    * used as an asynchronous message broker to handle messages users send amongst each other.
-    * reason for using a message broker implemented with queues because our app will not store user messages in a database as a security feature 
-    * this service offers more reliability and support for asynchronous messaging so that users do not have to be online in order to be sent messages and there is more flexibility in message coordination without sacrificing reliable message delivery
+
+### RabbitMQ
+This is used as an asynchronous message broker to handle messages users send amongst each other. The reason for using a message broker implemented with queues because our app will not store user messages in a database as a security feature. This service offers more reliability and support for asynchronous messaging so that users do not have to be online in order to be sent messages and there is more flexibility in message coordination without sacrificing reliable message delivery.
+
+#### Running RabbitMQ
+1. cd into the server location bin. With the default installation location, this looks like: `cd "C:\Program Files\RabbitMQ Server\rabbitmq_server-3.8.9\sbin`
+2. run the following as admin: `rabbitmq-server start`
+3. to view the RabbitMQ Management Console
+    3.1. if using for the first time, install the plugin using `rabbitmq-plugins.bat enable rabbitmq_management`
+    3.2. the console is viewable at the default port :15672
     
-* Java Spring Boot
-    * supports the messaging REST API
+### Java Spring Boot
+* supports the messaging REST API
 
 
 ## Project Structure 
@@ -42,7 +48,7 @@ The base endpoint is dynamic and will change depending on deployment. This defin
 
 ##### Version Information
 Java SDK: 1.8.0_261
-    
+RabbitMQ Server: 3.8.9
 
 ## TODO
 * defining, implementing, and polishing the rest of the message API, including fully integrating with message broker services
