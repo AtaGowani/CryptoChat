@@ -9,10 +9,12 @@ End-to-end working solution for this component requires two servers to be runnin
 This is used as an asynchronous message broker to handle messages users send amongst each other. The reason for using a message broker implemented with queues because our app will not store user messages in a database as a security feature. This service offers more reliability and support for asynchronous messaging so that users do not have to be online in order to be sent messages and there is more flexibility in message coordination without sacrificing reliable message delivery.
 
 #### Running RabbitMQ
-1. cd into the server location bin. With the default installation location, this looks like: `cd "C:\Program Files\RabbitMQ Server\rabbitmq_server-3.8.9\sbin`
-2. run the following as admin: `rabbitmq-server start`
-3. to view the RabbitMQ Management Console
-    3.1. if using for the first time, install the plugin using `rabbitmq-plugins.bat enable rabbitmq_management`
+1. cd into the server location bin. With the default installation location, this looks like: `cd "C:\Program Files\RabbitMQ Server\rabbitmq_server-3.8.9\sbin`  
+
+2. run the following as admin: `rabbitmq-server start`  
+
+3. to view the RabbitMQ Management Console  
+    3.1. if using for the first time, install the plugin using `rabbitmq-plugins.bat enable rabbitmq_management`  
     3.2. the console is viewable at the default port :15672
     
 ### Java Spring Boot
@@ -34,11 +36,32 @@ Source code components are in src/main/java inside the com.securemsgapp package.
 * ServletInitializer - servlet that allows deploying the backend components as a WAR file
     
 ## Message API Definition
-The base endpoint is dynamic and will change depending on deployment. This definition just includes the relative paths.
+The base endpoint is dynamic and will change depending on deployment. This definition just includes the relative paths.  
 
 ### /send
-* Request type: POST
-* Request body: the encrypted contents of the message that the user wishes to send
+* Usage: Sends a message from one user and adds it to the intended recipient's message queue
+* Returns: HTTP status code
+* Request method: POST
+* Request body: the encrypted contents of the message that the user wishes to send  
+
+### /mailbox
+* Usage: Retrieves all the messages in the calling user's message queue
+* Returns: JSON array with messages from queue
+* Request method: GET
+* Request body: <empty>  
+
+### /public-key
+Retrieves a requested user's public key.
+* Usage:
+* Returns:
+* Request method:
+* Request body:  
+
+### /delete
+* Usage:
+* Returns:
+* Request method: DELETE
+* Request body:  
     
 ## Development Notes
 * Open secure_messaging_app/messaging as a standalone Java project. This project is written and built for Windows systems.
@@ -47,7 +70,7 @@ The base endpoint is dynamic and will change depending on deployment. This defin
 * RabbitMQ server must be started separately. All other components are configured to deploy as a WAR file on a local Tomcat instance on `localhost:8080`
 
 ##### Version Information
-Java SDK: 1.8.0_261
+Java SDK: 1.8.0_261  
 RabbitMQ Server: 3.8.9
 
 ## TODO
