@@ -70,8 +70,8 @@ Retrieves a requested user's public key.
 * RabbitMQ server must be started separately. All other components are configured to deploy as a WAR file on a local Tomcat instance on `localhost:8080`
 
 ##### Version Information
-Java SDK: 1.8.0_261  
-RabbitMQ Server: 3.8.9
+Java SDK:           1.8.0_261  
+RabbitMQ Server:    3.8.9
 
 ## TODO
 * defining, implementing, and polishing the rest of the message API, including fully integrating with message broker services
