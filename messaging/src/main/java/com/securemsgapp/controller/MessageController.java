@@ -5,6 +5,8 @@ import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.listener.DirectMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,9 @@ public class MessageController {
     @Autowired
     private AmqpTemplate amqpTemplate;
 
+    @Autowired
+    private DirectMessageListenerContainer messageListenerContainer;
+
     @Value("${securemsgapp.rabbitmq.exchange}")
     private String exchange;
 
@@ -29,10 +34,11 @@ public class MessageController {
     public String sendMessage(@RequestBody String recipientName) {
         // Queue args: durable = false, exclusive = false, autoDelete = true
         Queue queue = new Queue(recipientName, false, false, true);
-        Binding binding = new Binding(recipientName, Binding.DestinationType.QUEUE, exchange, "user1", null);
+        Binding binding = new Binding(recipientName, Binding.DestinationType.QUEUE, exchange, recipientName, null);
         admin.declareQueue(queue);
         admin.declareBinding(binding);
-        amqpTemplate.convertAndSend(exchange, "user1", "hey");
+        messageListenerContainer.addQueues(queue);
+        amqpTemplate.convertAndSend(exchange, recipientName, recipientName);
 
         return "Message sent";
     }
