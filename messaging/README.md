@@ -74,6 +74,7 @@ Java SDK:           1.8.0_261
 RabbitMQ Server:    3.8.9
 
 ## TODO
+* exception handling
 * defining, implementing, and polishing the rest of the message API, including fully integrating with message broker services
 * authentication at API endpoints
 * implementation of message directing - message publishing and listening pattern that ensures each user only receives their own valid messages
