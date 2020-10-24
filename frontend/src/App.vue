@@ -1,26 +1,70 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class = "container">
+    <img src="./assets/cryptography-a-simple-overview-header@2x.png" alt="background" style="width:100%;">
+    <div id=left_nav>
+ <router-link to='/home'>Home</router-link>
+  </div>
+  <div id="right_nav">
+    <router-link to='/login'>Login</router-link>|
+    <router-link to="/register">Register</router-link>
+  </div>
+  <div style="clear: both;"></div> 
+  </div>
+  <router-view/>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+<style lang="scss">
+#container {
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap');
+  margin: 0px;
+  background: no-repeat center center;
+  position: relative;
+  border: none;
+  padding: 0px;
+  text-align: center;
+  color: white;
 }
-</script>
 
-<style>
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap');
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+#left_nav{
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap');
+  position: absolute;
+  top: 8px;
+  left: 16px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+  a {
+    font-weight: bold;
+    color: #f6f7f8;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
+}
+
+#right_nav {
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap');
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+  a {
+    font-weight: bold;
+    color: #f6f7f8;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
 }
 </style>
