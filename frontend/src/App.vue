@@ -1,6 +1,5 @@
 <template>
   <div class = "container">
-    <img src="./assets/cryptography-a-simple-overview-header@2x.png" alt="background" style="width:100%;">
     <div id=left_nav>
  <router-link to='/home'>Home</router-link>
   </div>
@@ -8,7 +7,6 @@
     <router-link to='/login'>Login</router-link>|
     <router-link to="/register">Register</router-link>
   </div>
-  <div style="clear: both;"></div> 
   </div>
   <router-view/>
 </template>
@@ -17,7 +15,8 @@
 #container {
   @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap');
   margin: 0px;
-  background: no-repeat center center;
+  background: repeat center center;
+  background-color: #2c3e50;
   position: relative;
   border: none;
   padding: 0px;
@@ -46,7 +45,7 @@
     color: #f6f7f8;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #424eb9;
     }
   }
 }
@@ -63,7 +62,7 @@
     color: #f6f7f8;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color:  #424eb9;
     }
   }
 }

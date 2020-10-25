@@ -1,7 +1,12 @@
 <template>
-  <div class="home-container">
-      <span>CryptoChat</span>
+<body>
+  <div class = "banner">
+    <span>CryptoChat</span>
+    <p class = "description">CryptoChat is an encrypted messaging web application</p>
   </div>
+    
+</body>
+  
 
 </template>
 
@@ -14,16 +19,22 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap'); 
 
-.home-container {
+body {
+  background-color: black;
+}
+
+ .banner {
   position: absolute;
   top: 20%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: aliceblue;
+  color: rgb(240, 240, 255);
   font-family: 'Roboto Mono', monospace;
-  font-size: 300%;
+  font-size: 70px;
 }
 
-
-
+.description{
+  color: rgb(240, 240, 255);
+  font-size: 30px;
+}
 </style>
