@@ -4,8 +4,11 @@
 
 * Running Linux, MacOS, or Windows
 * Must have Python 3.3 or greater
+* PostgreSQL 13 w/ pgAdmin recommended ([download](https://www.postgresql.org/download/))
 
 ## Getting Started
+
+### Setting up Repository
 
 First clone the repostiory
 
@@ -25,6 +28,22 @@ $ python -m pip install --upgrade pip setuptools
 $ python -m pip install -r requirements.txt
 ```
 
+### Setting up the Database
+
+**Must already have the db requirements met. See System Requirements section above**
+
+Navigate into `backend/instance/` and create a new file named `config.py`. Copy the sample configs from `example_config.py` into this new file and update the `DATABASE_URL` with the appropriate local db information.
+
+#### Initialize your Local Database
+
+The command below will create a `User` schema in your connected db as defined in `app/models/User.py`.
+
+```
+$ python manage.py initdb
+```
+
+### Starting the Server
+
 Start the development server
 ```
 $ python manage.py runserver
@@ -33,40 +52,6 @@ $ python manage.py runserver
 Navigate to `http://127.0.0.1:5000/`
 
 ## Project layout
-```
-backend/
-├── app/
-│   ├── __init__.py
-│   ├── main/
-│   │   ├── forms.py
-│   │   ├── __init__.py
-│   │   └── app.py
-│   ├── models/
-├── CHANGES
-├── config.py
-├── instance/
-│   └── config.py
-├── LICENSE
-├── manage.py
-├── README.md
-├── requirements.txt
-├── tests/
-│   ├── __init__.py
-│   └── test_main.py
-└── wsgi.py
-```
-
-When you clone the repo, you'll notice that you will be missing the *config.py* file in instance folder. You will find an *example_config.py* file instead.
-
-```
-├── instance/
-    └── example_config.py
-```
-
-This is b'coz it should be set to be ignored in the *.gitignore* file. Infact everything except *example_config.py* is set to be ignored. This is where you will store the deployment/production configuration values. You don't want to accidently push this to Github. Rename the file to *config.py* after you clone the repo.
-
-
-If available, the values in `flask-quickstart/instance/config.py` will override any config values set in the environment from `flask-quickstart/config.py` when environment is set to `production` (it is set to `development` by default).
 
 The **wsgi.py** file uses `production` as the environment. This file is to be used by WSGI servers such as Gunicorn.
 
@@ -75,8 +60,6 @@ You can also test production environment using `manage.py`
 ```
 $ python manage.py runserver --env production
 ```
-
-You'll find that there are `.gitkeep` files in some folders. Git does not track empty folders. This is a convention used to preserve the folder structure. These files are not necessary and you can delete them if you want.
 
 ## manage.py
 
