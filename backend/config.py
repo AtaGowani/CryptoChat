@@ -2,12 +2,12 @@ from flask import render_template
 
 
 # Custom error pages
-def page_not_found(e):
-    return render_template('error/404.html'), 404
+# def page_not_found(e):
+#     return render_template('error/404.html'), 404
 
 
-def internal_server_error(e):
-    return render_template('error/500.html'), 500
+# def internal_server_error(e):
+#     return render_template('error/500.html'), 500
 
 
 class Production:
@@ -22,8 +22,8 @@ class Production:
     def init_app(app):
         # flask-quickstart/instance/config.py
         app.config.from_pyfile('config.py', silent=True)
-        app.register_error_handler(404, page_not_found)
-        app.register_error_handler(500, internal_server_error)
+        # app.register_error_handler(404, page_not_found)
+        # app.register_error_handler(500, internal_server_error)
         return
 
 
@@ -35,7 +35,7 @@ class Development:
 
     @staticmethod
     def init_app(app):
-        app.register_error_handler(404, page_not_found)
+        # app.register_error_handler(404, page_not_found)
         return
 
 
