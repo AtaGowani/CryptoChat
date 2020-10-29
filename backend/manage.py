@@ -1,15 +1,9 @@
 import click
 from app import create_app
-from database import init_db
-# Import dependencies here
-# For example, if you were using SQLAlchem
-# from app import create_app, db
-
 
 @click.group()
 def cli():
     pass
-
 
 @click.command()
 @click.option(
@@ -17,11 +11,8 @@ def cli():
     help='Environment to use while running server',
     type=click.STRING
 )
-
 def initdb(env):
-    app = create_app(env)
-    db = init_db(app)
-    db.create_all()
+    app = create_app(env, True)
 
 @click.command()
 @click.option(
@@ -34,9 +25,8 @@ def initdb(env):
     help='Port to use while running server',
     type=click.STRING
 )
-
 def runserver(env, port):
-    app = create_app(env)
+    app = create_app(env, False)
     app.run(port=port)
 
 cli.add_command(cmd=runserver, name="runserver")
