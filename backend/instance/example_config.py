@@ -16,3 +16,5 @@ SECRET_KEY = "my_super_secret_production_key"
 TESTING = False
 DEBUG = False
 ENV = 'production'
+DATABASE_URL="postgresql+psycopg2://[user]:[password]@localhost:5433/[database_name]"
+PROD_DATABASE_URL=""
