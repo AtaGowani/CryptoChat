@@ -21,12 +21,13 @@ def index():
 
 @main.route('/signup', methods=['POST'])
 def signup():
+    # TO-DO: IMPLEMENT PROPER SIGNUP API
     email = request.form.get("email").upper()
     password = request.form.get("password")
     phone = request.form.get("phone")
     public_key = "SAMPLE_PUBLIC_KEY"
 
-    # Example of how data can be created initialized db
+    # Example of how data can be created in initialized db
     data = User(email, password, phone, public_key)
     db.session.add(data)
     db.session.commit()
@@ -35,6 +36,8 @@ def signup():
 
 @main.route('/signin', methods=['POST'])
 def signin():
+    # TO-DO: IMPLEMENT PROPER SIGNIN API
+    # Example of how data can be checked initialized db
     email = request.form.get("email").upper()
     user = User.query.filter(User.email == email).first()
     
