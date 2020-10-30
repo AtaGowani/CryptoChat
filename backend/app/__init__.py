@@ -22,7 +22,7 @@ def create_app(config_name, initdb):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL") if os.getenv('ENV') == "development" else os.getenv("PROD_DATABASE_URL")
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
     db.init_app(app)
 
