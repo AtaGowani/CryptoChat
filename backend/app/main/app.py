@@ -35,13 +35,12 @@ def signup():
 
 @main.route('/signin', methods=['POST'])
 def signin():
-    print("Line  38")
     email = request.form.get("email").upper()
     user = User.query.filter(User.email == email).first()
-    print("Line  41")
+    
     if user:
         user = user.__dict__
         if verify_pass(email, request.form.get("password")):
             return {"message": "user found"}
-    print("Line  46")
+
     return {"message": "user NOT found"}
