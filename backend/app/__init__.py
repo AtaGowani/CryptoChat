@@ -1,10 +1,11 @@
+import os
+
 from flask import Flask
 from config import config
-
-import os
 from os.path import join, dirname
 from dotenv import load_dotenv
 from .models.User import db
+from flask_cors import CORS
 
 # config module is available here
 # https://github.com/miguelgrinberg/flasky/issues/154
@@ -19,6 +20,8 @@ load_dotenv(config_file_path)
 
 def create_app(config_name, initdb):
     app = Flask(__name__, instance_relative_config=True)
+    CORS(app)
+
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
