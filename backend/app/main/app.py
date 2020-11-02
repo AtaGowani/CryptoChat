@@ -1,6 +1,7 @@
+import hashlib
+
 from flask import Blueprint, request
 from ..models.User import db, User
-import os
 
 main = Blueprint(
     'main',
@@ -8,6 +9,20 @@ main = Blueprint(
     template_folder='templates/main',
     url_prefix='/'
 )
+
+def create_user(email, password, phone, public_key):
+    user_email = User.query.filter(User.email == email).first()
+    user_phone = User.query.filter(User.phone == phone).first()
+
+    if user_email or user_phone:
+        print("USER NOT CREATED. PHONE OR EMAIL ALREADY EXISTS.")
+        return
+    
+    password = hashlib.sha256(password.encode()).hexdigest()
+    email = email.upper()
+    data = User(email, password, phone, public_key)
+    db.session.add(data)
+    db.session.commit()
 
 def verify_pass(email, pw):
     user = User.query.filter(User.email == email).first().__dict__
@@ -25,12 +40,9 @@ def signup():
     email = request.form.get("email").upper()
     password = request.form.get("password")
     phone = request.form.get("phone")
-    public_key = "SAMPLE_PUBLIC_KEY"
+    public_key = request.form.get("pk")
 
-    # Example of how data can be created in initialized db
-    data = User(email, password, phone, public_key)
-    db.session.add(data)
-    db.session.commit()
+    create_user(email, password, phone, public_key)
     
     return {"ok": 200}
 
