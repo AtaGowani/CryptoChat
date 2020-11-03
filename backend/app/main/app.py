@@ -29,7 +29,7 @@ def create_user(email, password, phone, public_key):
 
 def verify_pass(email, pw):
     user = User.query.filter(User.email == email).first().__dict__
-    if (user["password"] == pw):
+    if (user["password"] == hashlib.sha256(pw.encode()).hexdigest()):
         return True
     return False
 
@@ -62,14 +62,17 @@ def signup():
 
 @main.route('/signin', methods=['POST'])
 def signin():
-    # TO-DO: IMPLEMENT PROPER SIGNIN API
-    # Example of how data can be checked initialized db
     email = request.form.get("email").upper()
     user = User.query.filter(User.email == email).first()
     
     if user:
         user = user.__dict__
+        print(user)
         if verify_pass(email, request.form.get("password")):
-            return {"message": "user found"}
+            return {
+                "email": user["email"],
+                "phone": user["phone"],
+                "pk": user["public_key"]
+            }
 
-    return {"message": "user NOT found"}
+    return Response('{"message": "user NOT found"}', status=400, mimetype='application/json')
