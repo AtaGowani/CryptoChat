@@ -49,14 +49,14 @@ def signup():
 
     user = create_user(email, password, phone, public_key)
     
+    if not user:
+        return Response('{"message": "phone number, email or pk already exists"}', status=400, mimetype='application/json')
+
     user = {
         "email": user.email,
         "phone": user.phone,
         "pk": user.public_key
     }
-
-    if not user:
-        return Response('{"message": "phone number, email or pk already exists"}', status=400, mimetype='application/json')
     
     return Response(json.dumps(user), status=200, mimetype='application/json')
 
