@@ -39,7 +39,6 @@ def index():
 
 @main.route('/signup', methods=['POST'])
 def signup():
-    # TO-DO: IMPLEMENT PROPER SIGNUP API
     email = request.form.get("email").upper().strip()
     password = request.form.get("password")
     phone = request.form.get("phone").strip()
