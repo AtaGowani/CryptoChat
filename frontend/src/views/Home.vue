@@ -6,7 +6,12 @@
         CryptoChat is an encrypted messaging web application
       </p>
       <div>
-        <button type="button" draggable="false" class="btn btn-outline-dark">
+        <button
+          type="button"
+          @click="directRegister"
+          draggable="false"
+          class="btn btn-outline-dark"
+        >
           Create Account
         </button>
       </div>
@@ -15,7 +20,14 @@
 </template>
 
 <script>
-export default {};
+
+export default {
+  methods: {
+    directRegister() {
+      this.$router.push('/register');
+    },
+  },
+};
 </script>
 
 <style>

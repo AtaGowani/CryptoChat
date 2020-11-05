@@ -23,7 +23,7 @@
             <router-link class="nav-link" to="/about">About</router-link> 
           </li>
         </ul>
-        <router-link class="nav-link" to="/login">Log in</router-link> 
+        <router-link class="btn btn-outline-dark" to="/login">Log in</router-link> 
         <router-link class="btn btn-outline-dark" to="/register">Register</router-link>
         <!-- put three bar menu here for Login/Register -->
       </div>
