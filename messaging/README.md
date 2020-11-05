@@ -29,6 +29,7 @@ Source code components are in src/main/java inside the com.securemsgapp package.
     * RabbitMQConfig - adds the needed configuration parameters to an already live RabbitMQ server
 * model
     * Message - represents and encompasses all the relevant information about a message that wants to be sent
+	* MessageList - holds the arrayLists used  to store the messages so that they can be return as an array of JSON messages
 * service
     * RabbitMQListener - class for objects that listen for messages on a queue and consumes these messages as they are retrieved
     * RabbitMQSender - class for objects that send messages to a queue
