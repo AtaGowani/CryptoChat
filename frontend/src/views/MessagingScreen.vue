@@ -96,7 +96,7 @@ export default {
     selectedContactIndex: 0,
     contacts: [
       {
-        name: "Adam Bush",
+        name: "Marc Jim",
         userId: "umYHX3R",
         messageInput: "",
         messages: [
