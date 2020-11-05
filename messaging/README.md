@@ -74,6 +74,10 @@ Retrieves a requested user's public key.
 Java SDK:           1.8.0_261  
 RabbitMQ Server:    3.8.9
 
+### json-simple
+This project uses an unmodified json-simple jar, which can be found at https://github.com/fangyidong/json-simple
+and uses an Apache-2.0 License, which is found in the LICENSE.txt file.
+
 ## TODO
 * exception handling
 * blockchain applications + separation of duties policy to check code delivery
