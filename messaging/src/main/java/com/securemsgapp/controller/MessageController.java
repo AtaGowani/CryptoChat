@@ -4,6 +4,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
+import org.json.simple.JSONObject;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.DirectMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
@@ -29,6 +30,8 @@ public class MessageController {
 
     @Value("${securemsgapp.rabbitmq.exchange}")
     private String exchange;
+	
+	private MessageLists messageListManger = new MessageLists();
 
     @PostMapping(value = "/send")
     public String sendMessage(@RequestBody String recipientName) {
@@ -41,5 +44,21 @@ public class MessageController {
         amqpTemplate.convertAndSend(exchange, recipientName, recipientName);
 
         return "Message sent";
+    }
+	
+	  @GetMapping(value = "/mailbox")
+    public ArrayList<JSONObject> getMailbox() {
+        MessageController controller = new MessageController();
+        controller.convertTOJson(messageListManger);
+        return messageListManger.getjsonMessageList();
+    }
+
+    public void convertTOJson(MessageLists messagelists) {
+        for (int i = 0; i < messagelists.getMessageList().size(); i++) {
+            JSONObject json = new JSONObject();
+            json.put("body", messagelists.getMessageList().get(i));
+            messagelists.addItemTojsonMessageList(json);
+
+        }
     }
 }
