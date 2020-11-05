@@ -1,23 +1,21 @@
 <template>
   <div class="container">
-  <h1>Login Page</h1>
-    <br />
-    <br />
+    <h1>Login to CryptoChat</h1>
+    <br>
     <div class="row">
-      <div class="col-mod-6">
-        <form class="login-container">
-          <div class="form-group1">
-            <h1 class="email">Email</h1>
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <form>
+          <div class="form-group">
             <input
               type="email"
               class="form-control"
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
-              placeholder="Enter email"
+              placeholder="Email Address"
             />
           </div>
-          <div class="form-group2">
-            <h2 class="password">Password</h2>
+          <div class="form-group">
             <input
               type="password"
               class="form-control"
@@ -25,55 +23,70 @@
               placeholder="Password"
             />
           </div>
-          <button type="submit" class="btn-btn-primary">Login</button>
+          <button type="submit" class="btn btn-primary">Log In</button>
+          <b-row class="mt-3">
+            <b-col cols="6">
+              <router-link to="/forgotpassword" class="text-light"
+                ><small> Forgot password?</small></router-link
+              > </b-col
+            ><!--TODO: Make forgot password-->
+            <b-col cols="6" class="text-right"><small> | </small> </b-col>
+            <b-col cols="6" class="text-right">
+              <router-link to="/register" class="text-light"
+                ><small>Create new account</small></router-link
+              >
+            </b-col>
+          </b-row>
         </form>
       </div>
+      <div class="col-md-3"></div>
     </div>
   </div>
 </template>
-  
 
-<style lang="scss">
-    .container {
-      padding:16px;
-      position: relative;
-      font-size: 20px;
-      color: rgb(240, 240, 255);
-      padding: 50px;
-    }
+<script>
+export default {};
+</script>
 
-    .login-container {
-      border: 1px solid #2d2d2e;
-      display: block;
-      margin: 0 auto;
-      width: 400px;
-      height: 300px;
-      background-color: #3e3e3f;
-    }
+<style lang="scss" scoped>
+.container {
+  padding: 16px;
+  position: relative;
+  font-size: 20px;
+  color: rgb(240, 240, 255);
+  padding: 50px;
+}
 
-    .form-group1 {
-       margin-top: 50px;
-       font-size: 10px;
-        width: 100%; 
-        display: inline-block; 
-    }
+.login-container {
+  border: 1px solid #2d2d2e;
+  display: block;
+  margin: 0 auto;
+  width: 400px;
+  height: 300px;
+  background-color: #3e3e3f;
+}
 
-    .email {
-      margin-right: 100px;
-    }
+.form-group1 {
+  margin-top: 50px;
+  font-size: 10px;
+  width: 100%;
+  display: inline-block;
+}
 
-    .password {
-      margin-right: 80px;
-    }
-    .form-group2 {
-       font-size: 12px;
-        width: 100%;
-        display: inline-block; 
-       
-    }
+.email {
+  margin-right: 100px;
+}
 
-    .btn-btn-primary {
-      margin-top:50px;
-    }
+.password {
+  margin-right: 80px;
+}
+.form-group2 {
+  font-size: 12px;
+  width: 100%;
+  display: inline-block;
+}
 
+.btn-btn-primary {
+  margin-top: 50px;
+}
 </style>
