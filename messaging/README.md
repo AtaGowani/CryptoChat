@@ -29,6 +29,7 @@ Source code components are in src/main/java inside the com.securemsgapp package.
     * RabbitMQConfig - adds the needed configuration parameters to an already live RabbitMQ server
 * model
     * Message - represents and encompasses all the relevant information about a message that wants to be sent
+	* MessageList - holds the arrayLists used  to store the messages so that they can be return as an array of JSON messages
 * service
     * RabbitMQListener - class for objects that listen for messages on a queue and consumes these messages as they are retrieved
     * RabbitMQSender - class for objects that send messages to a queue
@@ -42,7 +43,8 @@ The base endpoint is dynamic and will change depending on deployment. This defin
 * Usage: Sends a message from one user and adds it to the intended recipient's message queue
 * Returns: HTTP status code
 * Request method: POST
-* Request body: the encrypted contents of the message that the user wishes to send  
+* Request parameters: to the recipient of the message, which is mapped to the requestParamater "msg" and the massage that one wants to send to the recipient, which is mapped to the requestParamater msg
+* An example call using the local host is: http://localhost:8080/msg-api/send?to=Sadie&msg=hi
 
 ### /mailbox
 * Usage: Retrieves all the messages in the calling user's message queue
@@ -72,6 +74,10 @@ Retrieves a requested user's public key.
 ##### Version Information
 Java SDK:           1.8.0_261  
 RabbitMQ Server:    3.8.9
+
+### json-simple
+This project uses an unmodified json-simple jar, which can be found at https://github.com/fangyidong/json-simple
+and uses an Apache-2.0 License, which is found in the LICENSE.txt file.
 
 ## TODO
 * exception handling
