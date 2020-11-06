@@ -47,23 +47,34 @@ public class MessageController {
         messageListenerContainer.addQueues(queue);
         Message message = new Message();
         message.setBody(msg);
+        message.setName(recipientName);
         messageListManger.addItemToMessageList(message);
         amqpTemplate.convertAndSend(exchange, recipientName, message);
         return "Message sent";
     }
-	
-	  @GetMapping(value = "/mailbox")
-    public ArrayList<JSONObject> getMailbox() {
+    @GetMapping(value = "/mailbox")
+    public ArrayList<JSONObject> getMailbox(@RequestParam("to") String recipientName) {
+       return returnMailbox(recipientName, messageListManger);
+
+    }
+
+
+
+    public ArrayList<JSONObject> returnMailbox(String recipientName, MessageLists messageListManger) {
         MessageController controller = new MessageController();
-        controller.convertTOJson(messageListManger);
+        controller.convertTOJson(messageListManger, recipientName);
         return messageListManger.getjsonMessageList();
     }
 
-    public void convertTOJson(MessageLists messagelists) {
+
+    public void convertTOJson(MessageLists messagelists, String name) {
+        messagelists.clearJsonList();
         for (int i = 0; i < messagelists.getMessageList().size(); i++) {
             JSONObject json = new JSONObject();
-            json.put("body", messagelists.getMessageList().get(i));
-            messagelists.addItemTojsonMessageList(json);
+            if (name.equals(messagelists.getMessageList().get(i).getName())) {
+                json.put("body", messagelists.getMessageList().get(i).getMessageBody());
+                messagelists.addItemTojsonMessageList(json);
+            }
 
         }
     }
