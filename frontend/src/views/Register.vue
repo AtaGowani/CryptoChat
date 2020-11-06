@@ -68,9 +68,8 @@
           </div>
           <button
             type="submit"
-            class="btn btn-outline-dark"
+            class="btn btn-outline-light"
             @keyup="resetPasswords"
-            @keydown="resetPasswords"
             @click="resetPasswords"
             v-if="
               passwordsFilled && !notSamePasswords && passwordValidation.valid
@@ -93,7 +92,7 @@ export default {
         { message: "At least one lowercase letter.", regex: /[a-z]+/ },
         { message: "At least one uppercase letter.", regex: /[A-Z]+/ },
         { message: "At least one number.", regex: /[0-9]+/ },
-        { message: "8 characters minimum.", regex: /.{8,}/ }
+        { message: "8 characters minimum.", regex: /.{8,}/ },
       ],
       password: "",
       checkPassword: "",
