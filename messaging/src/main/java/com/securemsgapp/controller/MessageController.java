@@ -4,9 +4,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.DirectMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +15,6 @@ import org.json.simple.JSONObject;
 
 import com.securemsgapp.model.Message;
 import com.securemsgapp.model.MessageLists;
-import com.securemsgapp.service.RabbitMQSender;
 
 @RestController
 @RequestMapping(value = "/msg-api")
@@ -47,23 +44,34 @@ public class MessageController {
         messageListenerContainer.addQueues(queue);
         Message message = new Message();
         message.setBody(msg);
+        message.setName(recipientName);
         messageListManger.addItemToMessageList(message);
         amqpTemplate.convertAndSend(exchange, recipientName, message);
         return "Message sent";
     }
-	
-	  @GetMapping(value = "/mailbox")
-    public ArrayList<JSONObject> getMailbox() {
+    @GetMapping(value = "/mailbox")
+    public ArrayList<JSONObject> getMailbox(@RequestParam("to") String recipientName) {
+       return returnMailbox(recipientName, messageListManger);
+
+    }
+
+
+
+    public ArrayList<JSONObject> returnMailbox(String recipientName, MessageLists messageListManger) {
         MessageController controller = new MessageController();
-        controller.convertTOJson(messageListManger);
+        controller.convertToJson(messageListManger, recipientName);
         return messageListManger.getjsonMessageList();
     }
 
-    public void convertTOJson(MessageLists messagelists) {
+
+    public void convertToJson(MessageLists messagelists, String name) {
+        messagelists.clearJsonList();
         for (int i = 0; i < messagelists.getMessageList().size(); i++) {
             JSONObject json = new JSONObject();
-            json.put("body", messagelists.getMessageList().get(i));
-            messagelists.addItemTojsonMessageList(json);
+            if (name.equals(messagelists.getMessageList().get(i).getName())) {
+                json.put("body", messagelists.getMessageList().get(i).getMessageBody());
+                messagelists.addItemTojsonMessageList(json);
+            }
 
         }
     }

@@ -43,27 +43,17 @@ The base endpoint is dynamic and will change depending on deployment. This defin
 * Usage: Sends a message from one user and adds it to the intended recipient's message queue
 * Returns: HTTP status code
 * Request method: POST
-* Request parameters: to the recipient of the message, which is mapped to the requestParamater "msg" and the massage that one wants to send to the recipient, which is mapped to the requestParamater msg
+* Request parameters: requestParamater "to", which holds the recipient's name and the requestParamater "msg", which holds the massage that one wants to send to the recipient.
 * An example call using the local host is: http://localhost:8080/msg-api/send?to=Sadie&msg=hi
 
 ### /mailbox
 * Usage: Retrieves all the messages in the calling user's message queue
-* Returns: JSON array with messages from queue
+* Returns: JSON array with messages a local list of messages.
 * Request method: GET
-* Request body: <empty>  
+* Request Parameter: requestParamater "to", which holds the recipient's name
+* An example call using the local host is: http://localhost:8080/msg-api/mailbox?to=Sadie
 
-### /public-key
-Retrieves a requested user's public key.
-* Usage:
-* Returns:
-* Request method:
-* Request body:  
 
-### /delete
-* Usage:
-* Returns:
-* Request method: DELETE
-* Request body:  
     
 ## Development Notes
 * Open secure_messaging_app/messaging as a standalone Java project. This project is written and built for Windows systems.
