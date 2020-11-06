@@ -7,6 +7,8 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.listener.DirectMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class MessageController {
 	private MessageLists messageListManger = new MessageLists();
 
     @PostMapping(value = "/send")
-    public String sendMessage(@RequestParam("to") String recipientName,@RequestParam("msg") String msg) {
+    public ResponseEntity<String> sendMessage(@RequestParam("to") String recipientName, @RequestParam("msg") String msg) {
         // Queue args: durable = false, exclusive = false, autoDelete = true
         Queue queue = new Queue(recipientName, true, false, false);
         Binding binding = new Binding(recipientName, Binding.DestinationType.QUEUE, exchange, recipientName, null);
@@ -47,7 +49,7 @@ public class MessageController {
         message.setName(recipientName);
         messageListManger.addItemToMessageList(message);
         amqpTemplate.convertAndSend(exchange, recipientName, message);
-        return "Message sent";
+        return new ResponseEntity<>("Message sent", HttpStatus.OK);
     }
     @GetMapping(value = "/mailbox")
     public ArrayList<JSONObject> getMailbox(@RequestParam("to") String recipientName) {
