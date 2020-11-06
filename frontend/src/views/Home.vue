@@ -1,6 +1,8 @@
 <template>
   <body>
-    <div class="banner" style="position: relative; left: 1000px; top: 300px">
+    <br>
+    <div class="banner">
+      <br>
       <p>CryptoChat</p>
       <p class="description">
         CryptoChat is an encrypted messaging web application

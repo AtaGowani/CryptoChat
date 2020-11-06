@@ -24,21 +24,58 @@
               placeholder="Phone Number"
             />
           </div>
+          <br />
           <div class="form-group">
+            <div class="form-group">
+              <input
+                type="password"
+                id="inputPassword5"
+                class="form-control"
+                aria-describedby="passwordHelpBlock"
+                placeholder="Password"
+                v-model="password"
+              />
+            </div>
+
             <input
               type="password"
-              id="inputPassword5"
               class="form-control"
               aria-describedby="passwordHelpBlock"
-              placeholder="Password"
+              placeholder="Confirm Password"
+              v-model.lazy="checkPassword"
             />
-            <small id="passwordHelpBlock" class="form-text text-muted">
-              Your password must be 8-20 characters long, contain letters and
-              numbers, and must not contain spaces, special characters, or
-              emoji.
-            </small>
+
+            <transition name="hint" appear>
+              <div
+                v-if="passwordValidation.errors.length > 0 && !submitted"
+                class="hints"
+              >
+                <small id="passwordHelpBlock">Password must have:</small>
+                <small
+                  id="passwordHelpBlock"
+                  class="form-text text-muted"
+                  v-for="error in passwordValidation.errors"
+                  :key="error"
+                >
+                  {{ error }}
+                </small>
+              </div>
+            </transition>
+
+            <div class="matches" v-if="notSamePasswords">
+              <small id="passwordHelpBlock">Passwords don't match.</small>
+            </div>
           </div>
-          <button type="submit" class="btn btn-primary">
+          <button
+            type="submit"
+            class="btn btn-outline-dark"
+            @keyup="resetPasswords"
+            @keydown="resetPasswords"
+            @click="resetPasswords"
+            v-if="
+              passwordsFilled && !notSamePasswords && passwordValidation.valid
+            "
+          >
             Create an account
           </button>
         </form>
@@ -49,7 +86,60 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      rules: [
+        { message: "At least one lowercase letter.", regex: /[a-z]+/ },
+        { message: "At least one uppercase letter.", regex: /[A-Z]+/ },
+        { message: "At least one number.", regex: /[0-9]+/ },
+        { message: "8 characters minimum.", regex: /.{8,}/ }
+      ],
+      password: "",
+      checkPassword: "",
+      passwordVisible: false,
+      submitted: false,
+    };
+  },
+  methods: {
+    resetPasswords() {
+      this.password = "";
+      this.checkPassword = "";
+      this.submitted = true;
+      setTimeout(() => {
+        this.submitted = false;
+      }, 2000);
+    },
+    togglePasswordVisibility() {
+      this.passwordVisible = !this.passwordVisible;
+    },
+  },
+  computed: {
+    notSamePasswords() {
+      if (this.passwordsFilled) {
+        return this.password !== this.checkPassword;
+      } else {
+        return false;
+      }
+    },
+    passwordsFilled() {
+      return this.password !== "" && this.checkPassword !== "";
+    },
+    passwordValidation() {
+      let errors = [];
+      for (let condition of this.rules) {
+        if (!condition.regex.test(this.password)) {
+          errors.push(condition.message);
+        }
+      }
+      if (errors.length === 0) {
+        return { valid: true, errors };
+      } else {
+        return { valid: false, errors };
+      }
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
