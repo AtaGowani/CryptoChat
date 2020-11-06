@@ -1,12 +1,12 @@
 package com.securemsgapp.config;
 
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.connection.Connection;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.DirectMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.securemsgapp.service.RabbitMQListener;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 
 @Configuration
 public class RabbitMQConfig {
@@ -25,22 +27,9 @@ public class RabbitMQConfig {
     @Value("${securemsgapp.rabbitmq.exchange}")
     String exchange;
 
-    @Value("${securemsgapp.rabbitmq.routingkey}")
-    private String routingkey;
-
-    @Bean
-    Queue queue() {
-        return new Queue(queueName, false);
-    }
-
     @Bean
     DirectExchange exchange() {
         return new DirectExchange(exchange);
-    }
-
-    @Bean
-    Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingkey);
     }
 
     @Bean
@@ -48,6 +37,10 @@ public class RabbitMQConfig {
         return new Jackson2JsonMessageConverter();
     }
 
+    @Bean
+    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
+        return new RabbitAdmin(connectionFactory);
+    }
 
     @Bean
     public AmqpTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
@@ -56,12 +49,17 @@ public class RabbitMQConfig {
         return rabbitTemplate;
     }
 
+
     @Bean
-    MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
-        SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
+    DirectMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
+        DirectMessageListenerContainer dmListenerContainer = new DirectMessageListenerContainer(connectionFactory);
+        dmListenerContainer.setExclusive(true);     // limit 1 consumer per queue
+        dmListenerContainer.setMessageListener(new RabbitMQListener());
+        /*SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
         simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
         simpleMessageListenerContainer.setQueues(queue());
         simpleMessageListenerContainer.setMessageListener(new RabbitMQListener());
-        return simpleMessageListenerContainer;
+        return simpleMessageListenerContainer;*/
+        return dmListenerContainer;
     }
 }

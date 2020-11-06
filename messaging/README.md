@@ -4,13 +4,21 @@
 End-to-end working solution for this component requires two servers to be running - one for the messaging API endpoint, and the other for the RabbitMQ server that handling asynchronous messaging.
 
 ## Major Components
-* RabbitMQ
-    * used as an asynchronous message broker to handle messages users send amongst each other.
-    * reason for using a message broker implemented with queues because our app will not store user messages in a database as a security feature 
-    * this service offers more reliability and support for asynchronous messaging so that users do not have to be online in order to be sent messages and there is more flexibility in message coordination without sacrificing reliable message delivery
+
+### RabbitMQ
+This is used as an asynchronous message broker to handle messages users send amongst each other. The reason for using a message broker implemented with queues because our app will not store user messages in a database as a security feature. This service offers more reliability and support for asynchronous messaging so that users do not have to be online in order to be sent messages and there is more flexibility in message coordination without sacrificing reliable message delivery.
+
+#### Running RabbitMQ
+1. cd into the server location bin. With the default installation location, this looks like: `cd "C:\Program Files\RabbitMQ Server\rabbitmq_server-3.8.9\sbin`  
+
+2. run the following as admin: `rabbitmq-server start`  
+
+3. to view the RabbitMQ Management Console  
+    3.1. if using for the first time, install the plugin using `rabbitmq-plugins.bat enable rabbitmq_management`  
+    3.2. the console is viewable at the default port :15672
     
-* Java Spring Boot
-    * supports the messaging REST API
+### Java Spring Boot
+* supports the messaging REST API
 
 
 ## Project Structure 
@@ -21,6 +29,7 @@ Source code components are in src/main/java inside the com.securemsgapp package.
     * RabbitMQConfig - adds the needed configuration parameters to an already live RabbitMQ server
 * model
     * Message - represents and encompasses all the relevant information about a message that wants to be sent
+	* MessageList - holds the arrayLists used  to store the messages so that they can be return as an array of JSON messages
 * service
     * RabbitMQListener - class for objects that listen for messages on a queue and consumes these messages as they are retrieved
     * RabbitMQSender - class for objects that send messages to a queue
@@ -28,11 +37,23 @@ Source code components are in src/main/java inside the com.securemsgapp package.
 * ServletInitializer - servlet that allows deploying the backend components as a WAR file
     
 ## Message API Definition
-The base endpoint is dynamic and will change depending on deployment. This definition just includes the relative paths.
+The base endpoint is dynamic and will change depending on deployment. This definition just includes the relative paths.  
 
 ### /send
-* Request type: POST
-* Request body: the encrypted contents of the message that the user wishes to send
+* Usage: Sends a message from one user and adds it to the intended recipient's message queue
+* Returns: HTTP status code
+* Request method: POST
+* Request parameters: requestParamater "to", which holds the recipient's name and the requestParamater "msg", which holds the massage that one wants to send to the recipient.
+* An example call using the local host is: http://localhost:8080/msg-api/send?to=Sadie&msg=hi
+
+### /mailbox
+* Usage: Retrieves all the messages in the calling user's message queue
+* Returns: JSON array with messages a local list of messages.
+* Request method: GET
+* Request Parameter: requestParamater "to", which holds the recipient's name
+* An example call using the local host is: http://localhost:8080/msg-api/mailbox?to=Sadie
+
+
     
 ## Development Notes
 * Open secure_messaging_app/messaging as a standalone Java project. This project is written and built for Windows systems.
@@ -41,10 +62,16 @@ The base endpoint is dynamic and will change depending on deployment. This defin
 * RabbitMQ server must be started separately. All other components are configured to deploy as a WAR file on a local Tomcat instance on `localhost:8080`
 
 ##### Version Information
-Java SDK: 1.8.0_261
-    
+Java SDK:           1.8.0_261  
+RabbitMQ Server:    3.8.9
+
+### json-simple
+This project uses an unmodified json-simple jar, which can be found at https://github.com/fangyidong/json-simple
+and uses an Apache-2.0 License, which is found in the LICENSE.txt file.
 
 ## TODO
+* exception handling
+* blockchain applications + separation of duties policy to check code delivery
 * defining, implementing, and polishing the rest of the message API, including fully integrating with message broker services
 * authentication at API endpoints
 * implementation of message directing - message publishing and listening pattern that ensures each user only receives their own valid messages
