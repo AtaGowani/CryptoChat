@@ -19,7 +19,7 @@ This is used as an asynchronous message broker to handle messages users send amo
     
 ### Java Spring Boot
 * supports the messaging REST API
-
+* In order to run successfully, three environment variables need to be set as per application.properties: RABBITMQ_USERNAME, RABBITMQ_PASSWD, and RABBITMQ_HOST
 
 ## Project Structure 
 Source code components are in src/main/java inside the com.securemsgapp package. There are four subpackages within:
@@ -54,7 +54,6 @@ The base endpoint is dynamic and will change depending on deployment. This defin
 * An example call using the local host is: http://localhost:8080/msg-api/mailbox?to=Sadie
 
 
-    
 ## Development Notes
 * Open secure_messaging_app/messaging as a standalone Java project. This project is written and built for Windows systems.
 * Built with Maven. To download all necessary project dependencies, use `mvn clean install`
