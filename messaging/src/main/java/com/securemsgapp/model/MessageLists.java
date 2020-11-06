@@ -22,4 +22,8 @@ public class MessageLists {
     public void addItemTojsonMessageList(JSONObject jObject) {
         this.jsonMessageList.add(jObject);
     }
+
+    public void clearJsonList() {
+        this.jsonMessageList = new ArrayList<>();
+    }
 }
