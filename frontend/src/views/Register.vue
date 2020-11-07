@@ -13,6 +13,7 @@
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               placeholder="Email Address"
+              v-model="email"
             />
           </div>
           <div class="form-group">
@@ -22,6 +23,7 @@
               id="exampleInputPhoneNumber1"
               aria-describedby="phoneNumberHelp"
               placeholder="Phone Number"
+              v-model="phoneNumber"
             />
           </div>
           <br />
@@ -71,6 +73,7 @@
             class="btn btn-outline-light"
             @keyup="resetPasswords"
             @click="resetPasswords"
+            @submit="onSubmit"
             v-if="
               passwordsFilled && !notSamePasswords && passwordValidation.valid
             "
@@ -85,6 +88,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -94,10 +98,13 @@ export default {
         { message: "At least one number.", regex: /[0-9]+/ },
         { message: "8 characters minimum.", regex: /.{8,}/ },
       ],
+      email: "",
+      phoneNumber: "",
       password: "",
       checkPassword: "",
       passwordVisible: false,
       submitted: false,
+      pk: "IDK",
     };
   },
   methods: {
@@ -111,6 +118,27 @@ export default {
     },
     togglePasswordVisibility() {
       this.passwordVisible = !this.passwordVisible;
+    },
+    onSubmit() {
+      const userRegistration = {};
+      userRegistration[this.email] = JSON.stringify({
+        email: this.email,
+        password: this.password,
+        phone: this.phoneNumber,
+        pk: this.pk,
+      });
+
+      axios
+        .post(
+          "https://cryptochat-backend.herokuapp.com/signup",
+          userRegistration
+        )
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   },
   computed: {
