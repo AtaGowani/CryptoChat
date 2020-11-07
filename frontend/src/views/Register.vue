@@ -71,9 +71,7 @@
           <button
             type="submit"
             class="btn btn-outline-light"
-            @keyup="resetPasswords"
-            @click="resetPasswords"
-            @submit="onSubmit"
+            v-on:submit.prevent="onSubmit"
             v-if="
               passwordsFilled && !notSamePasswords && passwordValidation.valid
             "
@@ -111,6 +109,8 @@ export default {
     resetPasswords() {
       this.password = "";
       this.checkPassword = "";
+      this.email = "";
+      this.phoneNumber = "";
       this.submitted = true;
       setTimeout(() => {
         this.submitted = false;
@@ -119,26 +119,31 @@ export default {
     togglePasswordVisibility() {
       this.passwordVisible = !this.passwordVisible;
     },
-    onSubmit() {
-      const userRegistration = {};
-      userRegistration[this.email] = JSON.stringify({
-        email: this.email,
-        password: this.password,
-        phone: this.phoneNumber,
-        pk: this.pk,
-      });
+    async onSubmit() {
+      var bodyFormData = new FormData();
+      bodyFormData.append("email", this.email);
+      console.log(this.email);
+      bodyFormData.append("password", this.password);
+      console.log(this.password);
+      bodyFormData.append("phone", this.phoneNumber);
+      console.log(this.phoneNumber);
+      bodyFormData.append("pk", this.pk);
+      console.log(this.pk);
 
-      axios
-        .post(
-          "https://cryptochat-backend.herokuapp.com/signup",
-          userRegistration
-        )
-        .then(function (response) {
-          console.log(response);
+      const res = await axios
+        .post("https://cryptochat-backend.herokuapp.com/signup", bodyFormData, {
+          headers: { "Content-Type": "multipart/form-data" },
         })
-        .catch(function (error) {
-          console.log(error);
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log(error.response.data); // => the response payload
+          }
         });
+        console.log(res);
+        this.resetPasswords();
     },
   },
   computed: {
