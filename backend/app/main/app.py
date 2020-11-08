@@ -1,4 +1,5 @@
 import hashlib
+from pbkdf2 import crypt
 import json
 
 from flask import Blueprint, request, Response
@@ -20,7 +21,7 @@ def create_user(email, password, phone, public_key):
         print("USER NOT CREATED. PHONE, EMAIL OR PK ALREADY EXISTS.")
         return False
     
-    password = hashlib.sha256(password.encode()).hexdigest()
+    password = crypt(password)
     email = email.upper()
     data = User(email, password, phone, public_key)
     db.session.add(data)
@@ -29,7 +30,9 @@ def create_user(email, password, phone, public_key):
 
 def verify_pass(email, pw):
     user = User.query.filter(User.email == email).first().__dict__
-    if (user["password"] == hashlib.sha256(pw.encode()).hexdigest()):
+    pw_hash = user["password"]
+    # print(crypt(pw))
+    if (pw_hash == crypt(pw, pw_hash)):
         return True
     return False
 
@@ -67,7 +70,6 @@ def signin():
     
     if user:
         user = user.__dict__
-        print(user)
         if verify_pass(email, request.form.get("password")):
             return {
                 "email": user["email"],
@@ -91,7 +93,7 @@ def getpk():
         
         if user:
             user = user.__dict__
-            print(user)
+            # print(user)
             return {
                 "pk": user["public_key"]
             }
