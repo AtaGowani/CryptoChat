@@ -43,8 +43,8 @@ The base endpoint is dynamic and will change depending on deployment. This defin
 * Usage: Sends a message from one user and adds it to the intended recipient's message queue
 * Returns: HTTP status code
 * Request method: POST
-* Request parameters: requestParamater "to", which holds the recipient's name and the requestParamater "msg", which holds the massage that one wants to send to the recipient.
-* An example call using the local host is: http://localhost:8080/msg-api/send?to=Sadie&msg=hi
+* Request parameters: requestParamater "to", which holds the recipient's name, requestParameter "from", which holds the sender's name, and the requestParamater "msg", which holds the massage that one wants to send to the recipient.
+* An example call using the local host is: http://localhost:8080/msg-api/send?to=Sadie&from=Ali&msg=hi
 
 ### /mailbox
 * Usage: Retrieves all the messages in the calling user's message queue
