@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-md-3"></div>
       <div class="col-md-6">
-        <form>
+        <form @submit.prevent="onSubmit()"> 
           <div class="form-group">
             <input
               type="email"
@@ -71,7 +71,7 @@
           <button
             type="submit"
             class="btn btn-outline-light"
-            v-on:submit.prevent="onSubmit"
+            v-on:submit="onSubmit()"
             v-if="
               passwordsFilled && !notSamePasswords && passwordValidation.valid
             "
@@ -87,8 +87,6 @@
 
 <script>
 import axios from "axios";
-import enc from "./encryption/encryption.js"
-
 export default {
   data() {
     return {
@@ -129,7 +127,7 @@ export default {
       console.log(this.password);
       bodyFormData.append("phone", this.phoneNumber);
       console.log(this.phoneNumber);
-      this.pk = enc.generateKeys(this.password)['privateKey'] //added this for privateKey generation
+      this.pk = this.email;
       bodyFormData.append("pk", this.pk);
       console.log(this.pk);
 
@@ -138,17 +136,19 @@ export default {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
+          this.$router.push('/signin');
+          alert("Account was successfully created.");
           console.log(res);
         })
         .catch((error) => {
           if (error.response) {
+            alert("Account, PhoneNumber, or PK already exist. Try again.");
             console.log(error.response.data); // => the response payload
           }
         });
         console.log(res);
         this.resetPasswords();
     },
-
   },
   computed: {
     notSamePasswords() {

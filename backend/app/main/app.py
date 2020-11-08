@@ -76,3 +76,24 @@ def signin():
             }
 
     return Response('{"message": "user NOT found"}', status=400, mimetype='application/json')
+
+@main.route('/pk', methods=['GET'])
+def getpk():
+    email = request.args.get("email").upper() if request.args.get("email") else None
+    phone = request.args.get("phone")
+    user = None
+
+    if email or phone:
+        if email:
+            user = User.query.filter(User.email == email).first()
+        else:
+            user = User.query.filter(User.phone == phone).first()
+        
+        if user:
+            user = user.__dict__
+            print(user)
+            return {
+                "pk": user["public_key"]
+            }
+
+    return Response('{"message": "user NOT found"}', status=400, mimetype='application/json')
