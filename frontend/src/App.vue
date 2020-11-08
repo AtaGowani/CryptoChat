@@ -19,9 +19,6 @@
           <li class="nav-item active">
             <router-link class="nav-link" to="/">Home</router-link> 
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/about">About</router-link> 
-          </li>
         </ul>
         <router-link class="btn btn-outline-dark" to="/login">Log in</router-link> 
         <router-link class="btn btn-outline-dark" to="/register">Register</router-link>
