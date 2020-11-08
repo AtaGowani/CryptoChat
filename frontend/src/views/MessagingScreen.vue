@@ -1,4 +1,4 @@
-<template lang="html">
+<template v-if="success" lang="html" >
   <div class="chatbox" id="app" >
     <div class="chatbox__container">
       <div class="chatbox__info">
@@ -25,8 +25,8 @@
 </template>
 
 <script>
-document.getElementById("register").style.visibility = "hidden";
-document.getElementById("").style.visibility = "hidden";
+// document.getElementById('nav-bar').style.visibility = 'hidden';
+
 
 import enc from "./encryption/encryption.js"
 
@@ -173,6 +173,7 @@ export default {
     ]
   })
 }
+
 </script>
 
 <style lang="scss">

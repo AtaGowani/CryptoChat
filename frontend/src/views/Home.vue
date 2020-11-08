@@ -22,7 +22,7 @@
 </template>
 
 <script>
-
+// document.getElementById('nav-bar').style.visibility = 'visible';
 export default {
   methods: {
     directRegister() {
