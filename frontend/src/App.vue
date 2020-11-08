@@ -20,7 +20,7 @@
             <router-link class="nav-link" to="/">Home</router-link> 
           </li>
         </ul>
-        <router-link class="btn btn-outline-dark" to="/login">Log in</router-link> 
+        <router-link class="btn btn-outline-dark" to="/signin">Log in</router-link> 
         <router-link class="btn btn-outline-dark" to="/register">Register</router-link>
         <!-- put three bar menu here for Login/Register -->
       </div>

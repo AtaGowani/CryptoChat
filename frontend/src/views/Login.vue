@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <h1>Login to CryptoChat</h1>
-    <br>
+    <br />
     <div class="row">
       <div class="col-md-3"></div>
       <div class="col-md-6">
-        <form>
+        <form @submit.prevent="onSubmit()">
           <div class="form-group">
             <input
               type="email"
@@ -13,6 +13,7 @@
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               placeholder="Email Address"
+              v-model="email"
             />
           </div>
           <div class="form-group">
@@ -21,12 +22,20 @@
               class="form-control"
               id="exampleInputPassword1"
               placeholder="Password"
+              v-model="password"
             />
           </div>
-          <button type="submit" class="btn btn-primary">Log In</button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="logIn"
+            v-on:submit="onSubmit()"
+          >
+            Log In
+          </button>
           <b-row class="mt-3">
             <b-col cols="6">
-              <router-link to="/forgotpassword" class="text-light"
+              <router-link to="/about" class="text-light"
                 ><small> Forgot password?</small></router-link
               > </b-col
             ><!--TODO: Make forgot password-->
@@ -45,7 +54,40 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    async onSubmit() {
+      var bodyFormData = new FormData();
+      bodyFormData.append("email", this.email);
+      console.log(this.email);
+      bodyFormData.append("password", this.password);
+      console.log(this.password);
+
+      const res = await axios
+        .post("https://cryptochat-backend.herokuapp.com/signin", bodyFormData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((res) => {
+          this.$router.push('/chat');
+          console.log(res);
+        })
+        .catch((error) => {
+          if (error.response) {
+            alert("Username and Account combination does not exist");
+            console.log(error.response.data); // => the response payload
+          }
+        });
+      console.log(res);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
