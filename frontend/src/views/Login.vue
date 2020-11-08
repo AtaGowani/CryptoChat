@@ -23,7 +23,7 @@
               placeholder="Password"
             />
           </div>
-          <button type="submit" class="btn btn-primary">Log In</button>
+          <button type="submit" class="btn btn-primary" id="logIn" v-on:submit.prevent="onSubmit">Log In</button>
           <b-row class="mt-3">
             <b-col cols="6">
               <router-link to="/forgotpassword" class="text-light"
@@ -45,7 +45,40 @@
 </template>
 
 <script>
-export default {};
+  
+import axios from "axios";
+export default {
+  data() {
+    return { 
+
+    email: "",
+    password: ""
+    };
+  },
+  methods: {
+    async OnSubmit(){
+      var bodyFormData = new FormData();
+      bodyFormData.append("email", this.email);
+      console.log(this.email);
+      bodyFormData.append("password", this.password);
+      console.log(this.password);
+
+      const res = await axios
+        axios.post("https://cryptochat-backend.herokuapp.com/signin", bodyFormData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log(error.response.data); // => the response payload
+          }
+        });
+        console.log(res);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
