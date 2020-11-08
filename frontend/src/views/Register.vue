@@ -136,7 +136,8 @@ export default {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
-          this.$router.push('/chat');
+          this.$router.push('/signin');
+          alert("Account was successfully created.");
           console.log(res);
         })
         .catch((error) => {
