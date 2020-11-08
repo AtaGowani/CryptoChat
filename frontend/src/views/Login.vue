@@ -13,6 +13,7 @@
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               placeholder="Email Address"
+              v-model="email"
             />
           </div>
           <div class="form-group">
@@ -21,6 +22,7 @@
               class="form-control"
               id="exampleInputPassword1"
               placeholder="Password"
+              v-model="password"
             />
           </div>
           <button
