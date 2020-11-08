@@ -29,7 +29,7 @@ const routes = [
     component: Register
   },
   {
-    path: '/messagingScreen',
+    path: '/chat',
     name: 'MessagingScreen',
     component: MessagingScreen
   }
