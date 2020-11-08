@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav-bar" v-show="active">
       <a class="navbar-brand" href="#">CryptoChat</a>
       <button
         class="navbar-toggler"
@@ -20,8 +20,8 @@
             <router-link class="nav-link" to="/">Home</router-link> 
           </li>
         </ul>
-        <router-link class="btn btn-outline-dark" to="/signin">Log in</router-link> 
-        <router-link class="btn btn-outline-dark" to="/register">Register</router-link>
+        <router-link class="btn btn-outline-dark" to="/signin" id='login'>Log in</router-link> 
+        <router-link class="btn btn-outline-dark" to="/register" id='register'>Register</router-link>
         <!-- put three bar menu here for Login/Register -->
       </div>
     </nav>
