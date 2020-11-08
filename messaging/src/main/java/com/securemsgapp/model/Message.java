@@ -2,20 +2,23 @@ package com.securemsgapp.model;
 
 public class Message {
     private String body;
-    private String name;
-    public String getMessageBody()  {
+    private String recipientName;
+    private String senderName;
+
+    public String getBody()  {
         return this.body;
     }
-
     public void setBody(String msgBody)  {
         this.body = msgBody;
     }
 
-    public String getName() {
-        return this.name;
+    public String getRecipientName() {
+        return this.recipientName;
+    }
+    public void setRecipientName(String name) {
+        this.recipientName = name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getSenderName()  {  return this.senderName;  }
+    public void setSenderName(String name)  {  this.senderName = name;  }
 }
