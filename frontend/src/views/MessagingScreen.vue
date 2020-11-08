@@ -25,7 +25,11 @@
 </template>
 
 <script>
+document.getElementById("register").style.visibility = "hidden";
+document.getElementById("").style.visibility = "hidden";
+
 import enc from "./encryption/encryption.js"
+
 const pkurl = new URL('https://cryptochat-backend.herokuapp.com/pk')
 const rurl = new URL('http://localhost:8080/msg-api/mailbox')
 const surl = new URL('http://localhost:8080/msg-api/send')
@@ -103,7 +107,12 @@ export default {
       }
     },
    async getMessages(){
-     this.privateKey = JSON.parse(localStorage.getItem("key"))
+      let fs = require("fs")
+      fs.readFile("./encryption/encryption.js", function(err, data){
+        if(err)throw err;
+        this.privateKey = data;
+      })
+
      let msg = await this.request(rurl, "to="+this.email)
       for(let i = 0; i < msg.length; i++){
         msg[i] = enc.decrypt(msg[i], this.privateKey)
