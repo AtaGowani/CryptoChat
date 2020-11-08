@@ -123,7 +123,7 @@ export default {
     async onSubmit() {
       var bodyFormData = new FormData();
       bodyFormData.append("email", this.email);
-      sessionStorage.setItem("useremail", this.email);
+      localStorage.setItem("useremail", this.email);
       console.log(this.email);
       bodyFormData.append("password", this.password);
       console.log(this.password);
