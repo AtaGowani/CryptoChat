@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-md-3"></div>
       <div class="col-md-6">
-        <form>
+        <form @submit.prevent="onSubmit()"> 
           <div class="form-group">
             <input
               type="email"
@@ -71,7 +71,7 @@
           <button
             type="submit"
             class="btn btn-outline-light"
-            v-on:submit.prevent="onSubmit"
+            v-on:submit="onSubmit()"
             v-if="
               passwordsFilled && !notSamePasswords && passwordValidation.valid
             "
@@ -127,6 +127,7 @@ export default {
       console.log(this.password);
       bodyFormData.append("phone", this.phoneNumber);
       console.log(this.phoneNumber);
+      this.pk = this.email;
       bodyFormData.append("pk", this.pk);
       console.log(this.pk);
 

@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <h1>Login to CryptoChat</h1>
-    <br>
+    <br />
     <div class="row">
       <div class="col-md-3"></div>
       <div class="col-md-6">
-        <form>
+        <form @submit.prevent="onSubmit()">
           <div class="form-group">
             <input
               type="email"
@@ -23,10 +23,17 @@
               placeholder="Password"
             />
           </div>
-          <button type="submit" class="btn btn-primary" id="logIn" v-on:submit.prevent="onSubmit">Log In</button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="logIn"
+            v-on:submit="onSubmit()"
+          >
+            Log In
+          </button>
           <b-row class="mt-3">
             <b-col cols="6">
-              <router-link to="/forgotpassword" class="text-light"
+              <router-link to="/about" class="text-light"
                 ><small> Forgot password?</small></router-link
               > </b-col
             ><!--TODO: Make forgot password-->
@@ -45,18 +52,16 @@
 </template>
 
 <script>
-  
 import axios from "axios";
 export default {
   data() {
-    return { 
-
-    email: "",
-    password: ""
+    return {
+      email: "",
+      password: "",
     };
   },
   methods: {
-    async OnSubmit(){
+    async onSubmit() {
       var bodyFormData = new FormData();
       bodyFormData.append("email", this.email);
       console.log(this.email);
@@ -64,7 +69,7 @@ export default {
       console.log(this.password);
 
       const res = await axios
-        axios.post("https://cryptochat-backend.herokuapp.com/signin", bodyFormData, {
+        .post("https://cryptochat-backend.herokuapp.com/signin", bodyFormData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
@@ -75,7 +80,7 @@ export default {
             console.log(error.response.data); // => the response payload
           }
         });
-        console.log(res);
+      console.log(res);
     },
   },
 };
