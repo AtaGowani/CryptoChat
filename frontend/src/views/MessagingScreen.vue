@@ -5,7 +5,7 @@
         <p>{{ contacts[selectedContactIndex].name }}</p>
       </div>
       <div class="chatbox__chat"><label>
-        <input class="chatbox__messageInput" v-model="selectedContact.messageInput" ref="newMessageInput" :placeholder="firstMessageSent ? 'New message...':'New message... (press enter to send)'" @keyup.enter="newMessage()" />
+        <input class="chatbox__messageInput" v-model="selectedContact.messageInput" ref="newMessageInput" :placeholder="firstMessageSent ? 'New message...':'New message... (press enter to send)'" @keyup.enter="sendMessage()" />
       </label>
         <div class="chatbox__messages"><template v-for="(message, messageIndex) in selectedContact.messages" :key="messageIndex">
           <div class="chatbox__date" v-if="messageIndex === 0 || messageIndex &gt; 0 &amp;&amp; selectedContact.messages[messageIndex - 1].date !== message.date">{{message.date}}</div><div class="chatbox__messageContainer" :class="message.authorId === userId ? 'chatbox__messageContainer--right':''" :style="{
@@ -24,6 +24,10 @@
 </template>
 
 <script>
+import enc from "./encryption/encryption.js"
+const URL='https://cryptochat-backend.herokuapp.com/send'
+const RECURL = 'http://localhost:8080/msg-api/mailbox'
+
 function makeId(length) {
   let result = "";
   let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -33,6 +37,7 @@ function makeId(length) {
   }
   return result;
 }
+
 export default {
   computed: {
     selectedContact() {
@@ -40,18 +45,58 @@ export default {
     }
   },
   methods: {
-    newMessage() {
+    async sendMessage() {
       if (this.selectedContact.messageInput.length > 0) {
-        //let today = new Date();
         this.selectedContact.messages.push({
           content: this.selectedContact.messageInput,
           authorId: this.userId,
           time: this.getTime(),
           date: this.getDate()
         });
+        let Data={
+          msg: enc.encrypt(this.selectedContact.messageInput, this.selectedContact.publicKey),
+          to: this.selectedContact.name
+        }
+
+        const parameters={
+          headers:{
+            "content-type":"application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(Data),
+          method: "POST"
+        }
+        fetch(URL, parameters)
+        .then(data=>{
+          console.log(data.json())
+        })
         this.firstMessageSent = true;
         this.selectedContact.messageInput = "";
       }
+    },
+   async getMessages(){
+      let Data={
+        to: this.userId
+      }
+      const parameters={
+        headers:{
+          "content-type":"application/json; charset=UTF-8"
+        },
+        body: JSON.stringify(Data),
+        method: "GET"
+      }
+      fetch(RECURL, parameters)
+      .then(data=>{
+        let msg = data.json()
+        for(var i = 0; i < msg.length; i++){
+          msg[i] = enc.decrypt(msg[i], this.privateKey)
+          this.selectedContact.messages.push({
+            content: msg[i],
+            authorId: this.selectedContact.userId,
+            time: this.getTime(),
+            date: this.getDate()
+          })
+        }
+      })
     },
     getDate() {
       let date = new Date();
@@ -77,7 +122,10 @@ export default {
     }
   },
   data: () =>({
+    name: "",
     userId: makeId(8),
+    privateKey:"",
+    publicKey:"",
     firstMessageSent: false,
     selectedContactIndex: 0,
     contacts: [
@@ -85,6 +133,8 @@ export default {
         name: "Marc Jim",
         userId: "umYHX3R",
         messageInput: "",
+        publicKey: "",
+        privateKey:"",
         messages: [
           {
             content: "Hi, how are you?",
@@ -140,7 +190,7 @@ body {
 }
 .chatbox__container {
   position: relative;
-  width: calc(100% - 175px);
+  width: calc(100%);
   height: 100%;
 }
 .chatbox__info {

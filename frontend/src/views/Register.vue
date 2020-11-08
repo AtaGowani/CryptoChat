@@ -87,6 +87,8 @@
 
 <script>
 import axios from "axios";
+import enc from "./encryption/encryption.js"
+
 export default {
   data() {
     return {
@@ -127,6 +129,7 @@ export default {
       console.log(this.password);
       bodyFormData.append("phone", this.phoneNumber);
       console.log(this.phoneNumber);
+      this.pk = enc.generateKeys(this.password)['privateKey'] //added this for privateKey generation
       bodyFormData.append("pk", this.pk);
       console.log(this.pk);
 
@@ -145,6 +148,7 @@ export default {
         console.log(res);
         this.resetPasswords();
     },
+
   },
   computed: {
     notSamePasswords() {
