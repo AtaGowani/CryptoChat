@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav-bar" v-show="active">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav-bar">
       <a class="navbar-brand" href="#">CryptoChat</a>
       <button
         class="navbar-toggler"
@@ -20,14 +20,34 @@
             <router-link class="nav-link" to="/">Home</router-link> 
           </li>
         </ul>
+        <div id="newLogin">
         <router-link class="btn btn-outline-dark" to="/signin" id='login'>Log in</router-link> 
         <router-link class="btn btn-outline-dark" to="/register" id='register'>Register</router-link>
         <!-- put three bar menu here for Login/Register -->
+        </div> 
+        <div id="loggingOut" style="visibility: hidden">
+        <router-link class="btn btn-outline-dark" to="/" id='logout' @click="onLogout()">Log out</router-link> 
+        </div> 
       </div>
     </nav>
     <router-view />
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+    };
+  },
+  methods: {
+    onLogout() {
+          document.getElementById('newLogin').style.visibility = 'visible';
+          document.getElementById('loggingOut').style.visibility = 'hidden';
+    },
+  },
+};
+</script>
 
 <style lang="scss">
 #container {

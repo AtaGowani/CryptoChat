@@ -76,7 +76,9 @@ export default {
         })
         .then((res) => {
           sessionStorage.setItem("useremail", this.email)
-          this.$router.push('/chat');
+          document.getElementById('newLogin').style.visibility = 'hidden';
+          document.getElementById('loggingOut').style.visibility = 'visible';
+          this.$router.push('/messagingScreen');
           console.log(res);
         })
         .catch((error) => {
