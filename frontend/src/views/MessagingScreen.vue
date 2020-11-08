@@ -129,7 +129,7 @@ export default {
     }
   },
   data: () =>({
-    name: "",
+    name: "A",
     phoneNumber:"",
     email: "",
     userId: makeId(8),
@@ -139,10 +139,10 @@ export default {
     selectedContactIndex: 0,
     contacts: [
       {
-        name: "Marc Jim",
+        name: "B",
         email:"",
         phoneNumber:"",
-        userId: "umYHX3R",
+        userId: makeId(8),
         messageInput: "",
         publicKey: "",
         privateKey:"",
