@@ -25,8 +25,10 @@
 
 <script>
 import enc from "./encryption/encryption.js"
-const URL='https://cryptochat-backend.herokuapp.com/send'
-const RECURL = 'http://localhost:8080/msg-api/mailbox'
+
+const pkurl = URL('https://cryptochat-backend.herokuapp.com/send')
+const rurl = URL('http://localhost:8080/msg-api/mailbox')
+const surl = URL('http://localhost:8080/msg-api/send')
 
 function makeId(length) {
   let result = "";
@@ -37,7 +39,9 @@ function makeId(length) {
   }
   return result;
 }
-
+function objectToQueryString(obj) {
+  return Object.keys(obj).map(key => key + '=' + obj[key]).join('&');
+}
 export default {
   computed: {
     selectedContact() {
@@ -45,6 +49,26 @@ export default {
     }
   },
   methods: {
+    async request(url, params, method = 'GET') {
+      const options = {
+        method,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      if (params) {
+        if (method === 'GET') {
+          url += '?' + objectToQueryString(params);
+        } else {
+          options.body = JSON.stringify(params);
+        }
+      }
+      const response = await fetch(url, options);
+      return await response.json()
+    },
+    async getPK(email){
+      return await this.request(pkurl, email)
+    },
     async sendMessage() {
       if (this.selectedContact.messageInput.length > 0) {
         this.selectedContact.messages.push({
@@ -53,50 +77,33 @@ export default {
           time: this.getTime(),
           date: this.getDate()
         });
+        this.selectedContact.publicKey = this.getPK(this.selectedContact.email)
         let Data={
           msg: enc.encrypt(this.selectedContact.messageInput, this.selectedContact.publicKey),
           to: this.selectedContact.name
         }
-
-        const parameters={
-          headers:{
-            "content-type":"application/json; charset=UTF-8"
-          },
-          body: JSON.stringify(Data),
-          method: "POST"
-        }
-        fetch(URL, parameters)
-        .then(data=>{
-          console.log(data.json())
-        })
+        await this.request(surl, Data)
         this.firstMessageSent = true;
         this.selectedContact.messageInput = "";
       }
     },
    async getMessages(){
-      let Data={
-        to: this.userId
-      }
-      const parameters={
-        headers:{
-          "content-type":"application/json; charset=UTF-8"
-        },
-        body: JSON.stringify(Data),
-        method: "GET"
-      }
-      fetch(RECURL, parameters)
-      .then(data=>{
-        let msg = data.json()
-        for(var i = 0; i < msg.length; i++){
-          msg[i] = enc.decrypt(msg[i], this.privateKey)
-          this.selectedContact.messages.push({
-            content: msg[i],
-            authorId: this.selectedContact.userId,
-            time: this.getTime(),
-            date: this.getDate()
-          })
-        }
+      let fs = require("fs")
+      fs.readFile("./encryption/encryption.js", function(err, data){
+        if(err)throw err;
+        this.privateKey = data;
       })
+     let msg = await this.request(rurl, this.email)
+      for(let i = 0; i < msg.length; i++){
+        msg[i] = enc.decrypt(msg[i], this.privateKey)
+        this.selectedContact.messages.push({
+          content: msg[i],
+          authorId: this.selectedContact.userId,
+          time: this.getTime(),
+          date: this.getDate()
+        })
+      }
+
     },
     getDate() {
       let date = new Date();
@@ -123,6 +130,8 @@ export default {
   },
   data: () =>({
     name: "",
+    phoneNumber:"",
+    email: "",
     userId: makeId(8),
     privateKey:"",
     publicKey:"",
@@ -131,16 +140,18 @@ export default {
     contacts: [
       {
         name: "Marc Jim",
+        email:"",
+        phoneNumber:"",
         userId: "umYHX3R",
         messageInput: "",
         publicKey: "",
         privateKey:"",
         messages: [
           {
-            content: "Hi, how are you?",
-            date: "2020-11-04",
-            time: "12:34 pm",
-            authorId: "umYHX3R"
+            content: "",
+            date: "",
+            time: "",
+            authorId: ""
           }
         ]
       }
