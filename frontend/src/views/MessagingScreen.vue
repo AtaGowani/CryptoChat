@@ -49,7 +49,6 @@ export default {
     }
   },
   methods: {
-
     async request(url, params, method = 'GET') {
       const options = {
         method,
@@ -91,7 +90,7 @@ export default {
           date: this.getDate()
         });
  //       console.log(this.selectedContact.email)
-  //      this.selectedContact.publicKey = this.getPK(this.selectedContact.email)
+        //      this.selectedContact.publicKey = this.getPK(this.selectedContact.email)
         let Data={
           msg: "hello",//enc.encrypt(this.selectedContact.messageInput, this.selectedContact.publicKey),
           to: this.selectedContact.email
@@ -99,16 +98,17 @@ export default {
         this.firstMessageSent = true;
         this.selectedContact.messageInput = "";
         await this.request(surl, Data, "POST");
-        console.log("back out")
+
       }
     },
    async getMessages(){
      this.privateKey = JSON.parse(localStorage.getItem("key"))
      let msg = await this.request(rurl, "to="+this.email)
+
       for(let i = 0; i < msg.length; i++){
-        msg[i] = enc.decrypt(msg[i], this.privateKey)
+        msg[i].msg = enc.decrypt(msg[i].msg, this.privateKey)
         this.selectedContact.messages.push({
-          content: msg[i],
+          content: msg[i].msg,
           authorId: this.selectedContact.userId,
           time: this.getTime(),
           date: this.getDate()
@@ -142,7 +142,7 @@ export default {
   data: () =>({
     name: "A",
     phoneNumber:"",
-    email: "",
+    email: sessionStorage.getItem("useremail"),
     userId: makeId(8),
     privateKey:"",
     publicKey:"",
@@ -159,7 +159,7 @@ export default {
         privateKey:"",
         messages: [
           {
-            content: "Hello",
+            content: "Example",
             date: "",
             time: "",
             authorId: "dsccscscs"

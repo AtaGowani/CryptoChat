@@ -75,6 +75,7 @@ export default {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
+          sessionStorage.setItem("useremail", this.email)
           this.$router.push('/chat');
           console.log(res);
         })
