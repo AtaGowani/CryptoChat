@@ -136,10 +136,12 @@ export default {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
+          this.$router.push('/chat');
           console.log(res);
         })
         .catch((error) => {
           if (error.response) {
+            alert("Account, PhoneNumber, or PK already exist. Try again.");
             console.log(error.response.data); // => the response payload
           }
         });

@@ -75,10 +75,12 @@ export default {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
+          this.$router.push('/chat');
           console.log(res);
         })
         .catch((error) => {
           if (error.response) {
+            alert("Username and Account combination does not exist");
             console.log(error.response.data); // => the response payload
           }
         });
