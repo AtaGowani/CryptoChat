@@ -93,6 +93,7 @@ export default {
         if(err)throw err;
         this.privateKey = data;
       })
+     fs.close()
      let msg = await this.request(rurl, this.email)
       for(let i = 0; i < msg.length; i++){
         msg[i] = enc.decrypt(msg[i], this.privateKey)
