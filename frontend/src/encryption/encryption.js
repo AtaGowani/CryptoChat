@@ -1,6 +1,7 @@
 const {generateKeyPair} = require('crypto')
 import CryptoJS from 'crypto-js'
 
+// eslint-disable-next-line no-unused-vars
 function generateKeys(pwd){
     let keys = {
         privateKey: "",
@@ -31,10 +32,12 @@ function generateKeys(pwd){
     })
 }
 
+// eslint-disable-next-line no-unused-vars
 function encrypt(msg, publicKey){
     return CryptoJS.AES.encrypt(msg, publicKey)
 }
 
+// eslint-disable-next-line no-unused-vars
 function decrypt(msg, privateKey){
     return CryptoJS.AES.decrypt(msg, privateKey)
 }
