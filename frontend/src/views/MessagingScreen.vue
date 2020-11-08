@@ -2,7 +2,8 @@
   <div class="chatbox" id="app" >
     <div class="chatbox__container">
       <div class="chatbox__info">
-        <p>{{ contacts[selectedContactIndex].name }}</p>
+        <button id= "input" @click="enterEmail()" >Recipient Email</button>
+        <p>{{ contacts[selectedContactIndex].email }}</p>
       </div>
       <div class="chatbox__chat"><label>
         <input class="chatbox__messageInput" v-model="selectedContact.messageInput" ref="newMessageInput" :placeholder="firstMessageSent ? 'New message...':'New message... (press enter to send)'" @keyup.enter="sendMessage()" />
@@ -26,9 +27,9 @@
 <script>
 import enc from "./encryption/encryption.js"
 
-const pkurl = URL('https://cryptochat-backend.herokuapp.com/send')
-const rurl = URL('http://localhost:8080/msg-api/mailbox')
-const surl = URL('http://localhost:8080/msg-api/send')
+const pkurl = new URL('https://cryptochat-backend.herokuapp.com/pk')
+const rurl = new URL('http://localhost:8080/msg-api/mailbox')
+const surl = new URL('http://localhost:8080/msg-api/send')
 
 function makeId(length) {
   let result = "";
@@ -49,6 +50,7 @@ export default {
     }
   },
   methods: {
+
     async request(url, params, method = 'GET') {
       const options = {
         method,
@@ -68,6 +70,17 @@ export default {
     },
     async getPK(email){
       return await this.request(pkurl, email)
+    },
+    enterEmail(){
+      // eslint-disable-next-line no-unused-vars
+      let email;
+      while(email==null||email=="") {
+        email = prompt("Please enter recipient email: ", "example@abc.com")
+        this.selectedContact.email = email;
+        console.log(this.selectedContact.email)
+      }
+
+      document.getElementById("input").remove()
     },
     async sendMessage() {
       if (this.selectedContact.messageInput.length > 0) {
