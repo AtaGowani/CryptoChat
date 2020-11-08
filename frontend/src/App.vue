@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <particles-bg type="tadpole" :bg="true" />
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav-bar">
       <a class="navbar-brand" href="#">CryptoChat</a>
       <button
@@ -35,7 +36,11 @@
 </template>
 
 <script>
+import { ParticlesBg } from "particles-bg-vue";
 export default {
+    components: {
+    ParticlesBg
+  },
   data() {
     return {
     };
