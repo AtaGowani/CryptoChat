@@ -2,10 +2,11 @@
   <div class="chatbox" id="app" >
     <div class="chatbox__container">
       <div class="chatbox__info">
-        <p>{{ contacts[selectedContactIndex].name }}</p>
+        <button id= "input" @click="enterEmail()" >Recipient Email</button>
+        <p>{{ contacts[selectedContactIndex].email }}</p>
       </div>
       <div class="chatbox__chat"><label>
-        <input class="chatbox__messageInput" v-model="selectedContact.messageInput" ref="newMessageInput" :placeholder="firstMessageSent ? 'New message...':'New message... (press enter to send)'" @keyup.enter="newMessage()" />
+        <input class="chatbox__messageInput" v-model="selectedContact.messageInput" ref="newMessageInput" :placeholder="firstMessageSent ? 'New message...':'New message... (press enter to send)'" @keyup.enter="sendMessage()" />
       </label>
         <div class="chatbox__messages"><template v-for="(message, messageIndex) in selectedContact.messages" :key="messageIndex">
           <div class="chatbox__date" v-if="messageIndex === 0 || messageIndex &gt; 0 &amp;&amp; selectedContact.messages[messageIndex - 1].date !== message.date">{{message.date}}</div><div class="chatbox__messageContainer" :class="message.authorId === userId ? 'chatbox__messageContainer--right':''" :style="{
@@ -24,6 +25,12 @@
 </template>
 
 <script>
+import enc from "./encryption/encryption.js"
+
+const pkurl = new URL('https://cryptochat-backend.herokuapp.com/pk')
+const rurl = new URL('http://localhost:8080/msg-api/mailbox')
+const surl = new URL('http://localhost:8080/msg-api/send')
+
 function makeId(length) {
   let result = "";
   let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -33,6 +40,9 @@ function makeId(length) {
   }
   return result;
 }
+/*function objectToQueryString(obj) {
+  return Object.keys(obj).map(key => key + '=' + obj[key]).join('&');
+}*/
 export default {
   computed: {
     selectedContact() {
@@ -40,18 +50,77 @@ export default {
     }
   },
   methods: {
-    newMessage() {
+
+    async request(url, params, method = 'GET') {
+      const options = {
+        method,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      if (params) {
+        if (method === 'GET') {
+          console.log(params)
+          url += '?' + params;
+          console.log(url)
+        } else {
+          options.body = JSON.stringify(params);
+        }
+      }
+      const response = await fetch(url, options);
+      return await response.json()
+    },
+    async getPK(email){
+      email = "email=" + email
+      return await this.request(pkurl, email)
+    },
+    enterEmail(){
+      let email;
+      while(email==null||email=="") {
+        email = prompt("Please enter recipient email: ", "example@abc.com")
+        this.selectedContact.email = email;
+        console.log(this.selectedContact.email)
+      }
+      document.getElementById("input").remove()
+    },
+    async sendMessage() {
       if (this.selectedContact.messageInput.length > 0) {
-        //let today = new Date();
         this.selectedContact.messages.push({
           content: this.selectedContact.messageInput,
           authorId: this.userId,
           time: this.getTime(),
           date: this.getDate()
         });
+ //       console.log(this.selectedContact.email)
+  //      this.selectedContact.publicKey = this.getPK(this.selectedContact.email)
+        let Data={
+          msg: "hello",//enc.encrypt(this.selectedContact.messageInput, this.selectedContact.publicKey),
+          to: this.selectedContact.email
+        }
         this.firstMessageSent = true;
         this.selectedContact.messageInput = "";
+        await this.request(surl, Data, "POST");
+        console.log("back out")
       }
+    },
+   async getMessages(){
+      let fs = require("fs")
+      fs.readFile("./encryption/encryption.js", function(err, data){
+        if(err)throw err;
+        this.privateKey = data;
+      })
+
+     let msg = await this.request(rurl, "to="+this.email)
+      for(let i = 0; i < msg.length; i++){
+        msg[i] = enc.decrypt(msg[i], this.privateKey)
+        this.selectedContact.messages.push({
+          content: msg[i],
+          authorId: this.selectedContact.userId,
+          time: this.getTime(),
+          date: this.getDate()
+        })
+      }
+
     },
     getDate() {
       let date = new Date();
@@ -77,20 +146,29 @@ export default {
     }
   },
   data: () =>({
+    name: "A",
+    phoneNumber:"",
+    email: "",
     userId: makeId(8),
+    privateKey:"",
+    publicKey:"",
     firstMessageSent: false,
     selectedContactIndex: 0,
     contacts: [
       {
-        name: "Marc Jim",
-        userId: "umYHX3R",
+        name: null,
+        email: null,
+        phoneNumber: null,
+        userId: makeId(8),
         messageInput: "",
+        publicKey: "",
+        privateKey:"",
         messages: [
           {
-            content: "Hi, how are you?",
-            date: "2020-11-04",
-            time: "12:34 pm",
-            authorId: "umYHX3R"
+            content: "Hello",
+            date: "",
+            time: "",
+            authorId: "dsccscscs"
           }
         ]
       }
@@ -140,7 +218,7 @@ body {
 }
 .chatbox__container {
   position: relative;
-  width: calc(100% - 175px);
+  width: calc(100%);
   height: 100%;
 }
 .chatbox__info {

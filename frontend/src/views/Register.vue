@@ -87,6 +87,7 @@
 
 <script>
 import axios from "axios";
+import enc from "./encryption/encryption.js"
 export default {
   data() {
     return {
@@ -127,7 +128,7 @@ export default {
       console.log(this.password);
       bodyFormData.append("phone", this.phoneNumber);
       console.log(this.phoneNumber);
-      this.pk = this.email;
+      this.pk = enc.generateKeys(this.password).publicKey // added to gen keys
       bodyFormData.append("pk", this.pk);
       console.log(this.pk);
 
@@ -136,7 +137,8 @@ export default {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
-          this.$router.push('/chat');
+          this.$router.push('/signin');
+          alert("Account was successfully created.");
           console.log(res);
         })
         .catch((error) => {
