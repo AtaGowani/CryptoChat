@@ -66,7 +66,7 @@ export default {
           url += '?' + params;
           console.log(url)
         } else {
-          options.body = JSON.stringify(params);
+          console.log("POST request")
         }
       }
       const response = await fetch(url, options);
@@ -93,16 +93,11 @@ export default {
           time: this.getTime(),
           date: this.getDate()
         });
- //       console.log(this.selectedContact.email)
-        //      this.selectedContact.publicKey = this.getPK(this.selectedContact.email)
-        let Data={
-          msg: "hello",//enc.encrypt(this.selectedContact.messageInput, this.selectedContact.publicKey),
-          to: this.selectedContact.email
-        }
+        this.selectedContact.publicKey = this.getPK(this.selectedContact.email)
         this.firstMessageSent = true;
         this.selectedContact.messageInput = "";
-        await this.request(surl, Data, "POST");
-
+        let newUrl = surl + "?to="+this.selectedContact.email +"&from="+this.email+"&msg="+enc.encrypt(this.selectedContact.messageInput, this.selectedContact.publicKey)
+        await this.request(newUrl, "POST");
       }
     },
    async getMessages(){
