@@ -4,12 +4,9 @@ import * as crypt from "cryptico"
 
 export default class enc {
 
-    static generateKeys(pwd) {
-        console.log("Hello")
-        let privateKey = crypt.generateRSAKey(pwd, 4096)
+    static generateKeys(email) {
+        let privateKey = crypt.generateRSAKey(email, 1024)
         localStorage.setItem("key", JSON.stringify(privateKey))
-        var key  = JSON.parse(localStorage.getItem("key"))
-        console.log(key)
         console.log("saved")
         return crypt.publicKeyString(privateKey)
     }

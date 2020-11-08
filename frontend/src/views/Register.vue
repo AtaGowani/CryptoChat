@@ -128,7 +128,7 @@ export default {
       console.log(this.password);
       bodyFormData.append("phone", this.phoneNumber);
       console.log(this.phoneNumber);
-      this.pk = enc.generateKeys(this.password) // added to gen keys
+      this.pk = enc.generateKeys(this.email) // added to gen keys
       bodyFormData.append("pk", this.pk);
       console.log(this.pk);
 
