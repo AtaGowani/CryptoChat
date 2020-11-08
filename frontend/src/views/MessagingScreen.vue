@@ -40,9 +40,9 @@ function makeId(length) {
   }
   return result;
 }
-function objectToQueryString(obj) {
+/*function objectToQueryString(obj) {
   return Object.keys(obj).map(key => key + '=' + obj[key]).join('&');
-}
+}*/
 export default {
   computed: {
     selectedContact() {
@@ -60,7 +60,9 @@ export default {
       };
       if (params) {
         if (method === 'GET') {
-          url += '?' + objectToQueryString(params);
+          console.log(params)
+          url += '?' + params;
+          console.log(url)
         } else {
           options.body = JSON.stringify(params);
         }
@@ -69,17 +71,16 @@ export default {
       return await response.json()
     },
     async getPK(email){
+      email = "email=" + email
       return await this.request(pkurl, email)
     },
     enterEmail(){
-      // eslint-disable-next-line no-unused-vars
       let email;
       while(email==null||email=="") {
         email = prompt("Please enter recipient email: ", "example@abc.com")
         this.selectedContact.email = email;
         console.log(this.selectedContact.email)
       }
-
       document.getElementById("input").remove()
     },
     async sendMessage() {
@@ -90,14 +91,16 @@ export default {
           time: this.getTime(),
           date: this.getDate()
         });
-        this.selectedContact.publicKey = this.getPK(this.selectedContact.email)
+ //       console.log(this.selectedContact.email)
+  //      this.selectedContact.publicKey = this.getPK(this.selectedContact.email)
         let Data={
-          msg: enc.encrypt(this.selectedContact.messageInput, this.selectedContact.publicKey),
-          to: this.selectedContact.name
+          msg: "hello",//enc.encrypt(this.selectedContact.messageInput, this.selectedContact.publicKey),
+          to: this.selectedContact.email
         }
-        await this.request(surl, Data)
         this.firstMessageSent = true;
         this.selectedContact.messageInput = "";
+        await this.request(surl, Data, "POST");
+        console.log("back out")
       }
     },
    async getMessages(){
@@ -106,8 +109,8 @@ export default {
         if(err)throw err;
         this.privateKey = data;
       })
-     fs.close()
-     let msg = await this.request(rurl, this.email)
+
+     let msg = await this.request(rurl, "to="+this.email)
       for(let i = 0; i < msg.length; i++){
         msg[i] = enc.decrypt(msg[i], this.privateKey)
         this.selectedContact.messages.push({
@@ -153,19 +156,19 @@ export default {
     selectedContactIndex: 0,
     contacts: [
       {
-        name: "B",
-        email:"",
-        phoneNumber:"",
+        name: null,
+        email: null,
+        phoneNumber: null,
         userId: makeId(8),
         messageInput: "",
         publicKey: "",
         privateKey:"",
         messages: [
           {
-            content: "",
+            content: "Hello",
             date: "",
             time: "",
-            authorId: ""
+            authorId: "dsccscscs"
           }
         ]
       }

@@ -29,7 +29,7 @@ export default class enc {
                     if (err) throw err;
                     console.log("saved")
                 })
-                fs.close()
+
                 keys['publicKey'] = publicKey
                 return keys
             } else {
