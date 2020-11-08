@@ -1,5 +1,3 @@
-
-let CryptoJS = require('crypto-js')
 import * as crypt from "cryptico"
 
 export default class enc {
@@ -11,11 +9,11 @@ export default class enc {
         return crypt.publicKeyString(privateKey)
     }
    static encrypt(msg, publicKey) {
-        return CryptoJS.AES.encrypt(msg, publicKey)
+        return crypt.encrypt(msg, publicKey)
     }
 
     static decrypt(msg, privateKey) {
-        return CryptoJS.AES.decrypt(msg, privateKey)
+        return crypt.decrypt(msg, privateKey)
     }
 }
 
