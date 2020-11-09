@@ -71,13 +71,14 @@ export default {
       return await this.request(pkurl, email)
     },
     enterEmail(){
+      let attempts = 0
       let email;
       while(email==null||email=="") {
         email = prompt("Please enter recipient email: ", "example@abc.com")
         this.selectedContact.email = email;
         console.log(this.selectedContact.email)
       }
-      this.poll()
+      this.poll(attempts)
       document.getElementById("input").remove()
     },
     async sendMessage() {
@@ -96,7 +97,16 @@ export default {
       }
     },
 
-   async getMessages(){
+   async getMessages(attempts){
+
+      if (attempts == 0){
+        this.selectedContact.messages.push({
+          content: "How's it going?",
+          authorId: this.selectedContact.userId,
+          time: this.getTime(),
+          date: this.getDate()
+        })
+      }
      this.privateKey = JSON.parse(sessionStorage.getItem("key"))
      let msg = await this.request(rurl, "to="+this.email)
       for(let i = 0; i < msg.length; i++){
@@ -107,12 +117,13 @@ export default {
           time: this.getTime(),
           date: this.getDate()
         })
+
         return msg
       }
 
     },
-    poll(){
-      this.getMessages()
+    poll(attempts){
+      this.getMessages(attempts)
       setTimeout(this.poll, 1000)
     },
     getDate() {
@@ -158,7 +169,7 @@ export default {
         privateKey:"",
         messages: [
           {
-            content: "Hello!",
+            content: "Example",
             date: "2020-11-08",
             time: "8:44 pm",
             authorId: "dsccscscs"
