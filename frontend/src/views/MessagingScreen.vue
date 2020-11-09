@@ -110,9 +110,9 @@ export default {
      this.privateKey = JSON.parse(sessionStorage.getItem("key"))
      let msg = await this.request(rurl, "to="+this.email)
       for(let i = 0; i < msg.length; i++){
-        msg[i].msg = enc.decrypt(msg[i].msg, this.privateKey)
+        msg[i].body = enc.decrypt(msg[i].body, this.privateKey)
         this.selectedContact.messages.push({
-          content: msg[i].msg,
+          content: msg[i].body,
           authorId: this.selectedContact.userId,
           time: this.getTime(),
           date: this.getDate()
