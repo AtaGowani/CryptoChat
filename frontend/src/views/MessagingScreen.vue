@@ -159,8 +159,8 @@ export default {
         messages: [
           {
             content: "Hello!",
-            date: "2020-11-05",
-            time: "12:34 pm",
+            date: "2020-11-08",
+            time: "8:44 pm",
             authorId: "dsccscscs"
           }
         ]
