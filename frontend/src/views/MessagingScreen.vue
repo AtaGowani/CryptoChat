@@ -77,7 +77,7 @@ export default {
         this.selectedContact.email = email;
         console.log(this.selectedContact.email)
       }
-      this.getMessages();
+      this.poll()
       document.getElementById("input").remove()
     },
     async sendMessage() {
