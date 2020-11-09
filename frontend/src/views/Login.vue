@@ -78,7 +78,7 @@ export default {
           sessionStorage.setItem("useremail", this.email)
           document.getElementById('newLogin').style.visibility = 'hidden';
           document.getElementById('loggingOut').style.visibility = 'visible';
-          this.$router.push('/messagingScreen');
+          this.$router.push('/chat');
           console.log(res);
         })
         .catch((error) => {
