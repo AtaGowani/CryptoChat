@@ -25,11 +25,7 @@
 </template>
 
 <script>
-// document.getElementById('nav-bar').style.visibility = 'hidden';
-
-
 import enc from "./encryption/encryption.js"
-
 const pkurl = new URL('https://cryptochat-backend.herokuapp.com/pk')
 const rurl = new URL('http://localhost:8080/msg-api/mailbox')
 const surl = new URL('http://localhost:8080/msg-api/send')
@@ -43,9 +39,7 @@ function makeId(length) {
   }
   return result;
 }
-/*function objectToQueryString(obj) {
-  return Object.keys(obj).map(key => key + '=' + obj[key]).join('&');
-}*/
+
 export default {
   computed: {
     selectedContact() {
@@ -83,6 +77,7 @@ export default {
         this.selectedContact.email = email;
         console.log(this.selectedContact.email)
       }
+      this.getMessages();
       document.getElementById("input").remove()
     },
     async sendMessage() {
@@ -100,15 +95,10 @@ export default {
         await this.request(newUrl, "POST");
       }
     },
+
    async getMessages(){
-      let fs = require("fs")
-      fs.readFile("./encryption/encryption.js", function(err, data){
-        if(err)throw err;
-        this.privateKey = data;
-      })
-
+     this.privateKey = JSON.parse(sessionStorage.getItem("key"))
      let msg = await this.request(rurl, "to="+this.email)
-
       for(let i = 0; i < msg.length; i++){
         msg[i].msg = enc.decrypt(msg[i].msg, this.privateKey)
         this.selectedContact.messages.push({
@@ -117,8 +107,13 @@ export default {
           time: this.getTime(),
           date: this.getDate()
         })
+        return msg
       }
 
+    },
+    poll(){
+      this.getMessages()
+      setTimeout(this.poll, 1000)
     },
     getDate() {
       let date = new Date();
