@@ -163,9 +163,9 @@ export default {
         privateKey:"",
         messages: [
           {
-            content: "Example",
-            date: "",
-            time: "",
+            content: "Hello!",
+            date: "2020-11-05",
+            time: "12:34 pm",
             authorId: "dsccscscs"
           }
         ]
